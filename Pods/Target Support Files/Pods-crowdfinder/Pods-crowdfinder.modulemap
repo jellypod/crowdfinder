@@ -1,0 +1,6 @@
+framework module Pods_crowdfinder {
+  umbrella header "Pods-crowdfinder-umbrella.h"
+
+  export *
+  module * { export * }
+}

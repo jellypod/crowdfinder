@@ -1,0 +1,10 @@
+use_frameworks!
+target ‘crowdfinder’
+ 
+pod 'Firebase/Core'
+pod 'Firebase/Database'
+pod 'GooglePlaces'
+  pod 'GooglePlacePicker'
+  pod 'GoogleMaps'
+ pod 'Firebase/Messaging'
+pod ‘SwiftLocation’

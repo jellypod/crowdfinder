@@ -12,9 +12,23 @@
 		CD103B601F77192B007A7600 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD103B5E1F77192B007A7600 /* Main.storyboard */; };
 		CD103B621F77192B007A7600 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD103B611F77192B007A7600 /* Assets.xcassets */; };
 		CD103B651F77192B007A7600 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD103B631F77192B007A7600 /* LaunchScreen.storyboard */; };
+		CD103B791F771DE9007A7600 /* FBAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B6E1F771DE7007A7600 /* FBAnnotation.swift */; };
+		CD103B7A1F771DE9007A7600 /* FBAnnotationClusterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B6F1F771DE7007A7600 /* FBAnnotationClusterView.swift */; };
+		CD103B7B1F771DE9007A7600 /* FBAnnotationClusterTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B701F771DE7007A7600 /* FBAnnotationClusterTemplate.swift */; };
+		CD103B7C1F771DE9007A7600 /* FBClusteringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B711F771DE7007A7600 /* FBClusteringManager.swift */; };
+		CD103B7D1F771DE9007A7600 /* FBQuadTreeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B721F771DE7007A7600 /* FBQuadTreeNode.swift */; };
+		CD103B7E1F771DE9007A7600 /* FBBoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B731F771DE8007A7600 /* FBBoundingBox.swift */; };
+		CD103B7F1F771DE9007A7600 /* FBBoundingBox+MapKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B741F771DE8007A7600 /* FBBoundingBox+MapKit.swift */; };
+		CD103B801F771DE9007A7600 /* FBZoomLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B751F771DE8007A7600 /* FBZoomLevel.swift */; };
+		CD103B811F771DE9007A7600 /* FBQuadTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B761F771DE8007A7600 /* FBQuadTree.swift */; };
+		CD103B821F771DE9007A7600 /* FBAnnotationCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B771F771DE8007A7600 /* FBAnnotationCluster.swift */; };
+		CD103B831F771DE9007A7600 /* FBAnnotationClusterViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B781F771DE8007A7600 /* FBAnnotationClusterViewConfiguration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E923E2A0B6019437ABA016D /* Pods_crowdfinder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_crowdfinder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B2D0A6DB9163C0295D6516A /* Pods-crowdfinder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crowdfinder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder.debug.xcconfig"; sourceTree = "<group>"; };
+		C4F8A0ED4789BEAB0BC37822 /* Pods-crowdfinder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-crowdfinder.release.xcconfig"; path = "Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder.release.xcconfig"; sourceTree = "<group>"; };
 		CD103B571F77192B007A7600 /* crowdfinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = crowdfinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD103B5A1F77192B007A7600 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD103B5C1F77192B007A7600 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -22,6 +36,22 @@
 		CD103B611F77192B007A7600 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD103B641F77192B007A7600 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD103B661F77192B007A7600 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CD103B6E1F771DE7007A7600 /* FBAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAnnotation.swift; sourceTree = "<group>"; };
+		CD103B6F1F771DE7007A7600 /* FBAnnotationClusterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAnnotationClusterView.swift; sourceTree = "<group>"; };
+		CD103B701F771DE7007A7600 /* FBAnnotationClusterTemplate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAnnotationClusterTemplate.swift; sourceTree = "<group>"; };
+		CD103B711F771DE7007A7600 /* FBClusteringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBClusteringManager.swift; sourceTree = "<group>"; };
+		CD103B721F771DE7007A7600 /* FBQuadTreeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBQuadTreeNode.swift; sourceTree = "<group>"; };
+		CD103B731F771DE8007A7600 /* FBBoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBBoundingBox.swift; sourceTree = "<group>"; };
+		CD103B741F771DE8007A7600 /* FBBoundingBox+MapKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FBBoundingBox+MapKit.swift"; sourceTree = "<group>"; };
+		CD103B751F771DE8007A7600 /* FBZoomLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBZoomLevel.swift; sourceTree = "<group>"; };
+		CD103B761F771DE8007A7600 /* FBQuadTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBQuadTree.swift; sourceTree = "<group>"; };
+		CD103B771F771DE8007A7600 /* FBAnnotationCluster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAnnotationCluster.swift; sourceTree = "<group>"; };
+		CD103B781F771DE8007A7600 /* FBAnnotationClusterViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAnnotationClusterViewConfiguration.swift; sourceTree = "<group>"; };
+		CD103B851F7720C4007A7600 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD103B8B1F77223F007A7600 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA5194B1F77542B00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA5194D1F77562E00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDA519501F7760B000997426 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,11 +65,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22B25DF966C3AEE4B0135C48 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B2D0A6DB9163C0295D6516A /* Pods-crowdfinder.debug.xcconfig */,
+				C4F8A0ED4789BEAB0BC37822 /* Pods-crowdfinder.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		50FDD6E25C234D7E79316613 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CDA5194D1F77562E00997426 /* SwiftLocation.framework */,
+				CDA5194B1F77542B00997426 /* SwiftLocation.framework */,
+				CD103B8B1F77223F007A7600 /* SwiftLocation.framework */,
+				CD103B851F7720C4007A7600 /* SwiftLocation.framework */,
+				2E923E2A0B6019437ABA016D /* Pods_crowdfinder.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CD103B4E1F77192B007A7600 = {
 			isa = PBXGroup;
 			children = (
 				CD103B591F77192B007A7600 /* crowdfinder */,
 				CD103B581F77192B007A7600 /* Products */,
+				22B25DF966C3AEE4B0135C48 /* Pods */,
+				50FDD6E25C234D7E79316613 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,6 +107,18 @@
 		CD103B591F77192B007A7600 /* crowdfinder */ = {
 			isa = PBXGroup;
 			children = (
+				CDA519501F7760B000997426 /* GoogleService-Info.plist */,
+				CD103B6E1F771DE7007A7600 /* FBAnnotation.swift */,
+				CD103B771F771DE8007A7600 /* FBAnnotationCluster.swift */,
+				CD103B701F771DE7007A7600 /* FBAnnotationClusterTemplate.swift */,
+				CD103B6F1F771DE7007A7600 /* FBAnnotationClusterView.swift */,
+				CD103B781F771DE8007A7600 /* FBAnnotationClusterViewConfiguration.swift */,
+				CD103B731F771DE8007A7600 /* FBBoundingBox.swift */,
+				CD103B741F771DE8007A7600 /* FBBoundingBox+MapKit.swift */,
+				CD103B711F771DE7007A7600 /* FBClusteringManager.swift */,
+				CD103B761F771DE8007A7600 /* FBQuadTree.swift */,
+				CD103B721F771DE7007A7600 /* FBQuadTreeNode.swift */,
+				CD103B751F771DE8007A7600 /* FBZoomLevel.swift */,
 				CD103B5A1F77192B007A7600 /* AppDelegate.swift */,
 				CD103B5C1F77192B007A7600 /* ViewController.swift */,
 				CD103B5E1F77192B007A7600 /* Main.storyboard */,
@@ -71,9 +136,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD103B691F77192B007A7600 /* Build configuration list for PBXNativeTarget "crowdfinder" */;
 			buildPhases = (
+				D1C20C903E576F2A9CFEA544 /* [CP] Check Pods Manifest.lock */,
 				CD103B531F77192B007A7600 /* Sources */,
 				CD103B541F77192B007A7600 /* Frameworks */,
 				CD103B551F77192B007A7600 /* Resources */,
+				74729488953CDC0A15E5D289 /* [CP] Embed Pods Frameworks */,
+				8B019411FD2622AED304C48A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,13 +199,91 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		74729488953CDC0A15E5D289 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8B019411FD2622AED304C48A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlacePicker/Frameworks/GooglePlacePicker.framework/Resources/GooglePlacePicker.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Resources/GooglePlaces.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D1C20C903E576F2A9CFEA544 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-crowdfinder-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CD103B531F77192B007A7600 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD103B7A1F771DE9007A7600 /* FBAnnotationClusterView.swift in Sources */,
+				CD103B7B1F771DE9007A7600 /* FBAnnotationClusterTemplate.swift in Sources */,
 				CD103B5D1F77192B007A7600 /* ViewController.swift in Sources */,
 				CD103B5B1F77192B007A7600 /* AppDelegate.swift in Sources */,
+				CD103B831F771DE9007A7600 /* FBAnnotationClusterViewConfiguration.swift in Sources */,
+				CD103B7D1F771DE9007A7600 /* FBQuadTreeNode.swift in Sources */,
+				CD103B7E1F771DE9007A7600 /* FBBoundingBox.swift in Sources */,
+				CD103B791F771DE9007A7600 /* FBAnnotation.swift in Sources */,
+				CD103B801F771DE9007A7600 /* FBZoomLevel.swift in Sources */,
+				CD103B7C1F771DE9007A7600 /* FBClusteringManager.swift in Sources */,
+				CD103B821F771DE9007A7600 /* FBAnnotationCluster.swift in Sources */,
+				CD103B7F1F771DE9007A7600 /* FBBoundingBox+MapKit.swift in Sources */,
+				CD103B811F771DE9007A7600 /* FBQuadTree.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +363,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -266,12 +413,14 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		CD103B6A1F77192B007A7600 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B2D0A6DB9163C0295D6516A /* Pods-crowdfinder.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -287,6 +436,7 @@
 		};
 		CD103B6B1F77192B007A7600 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C4F8A0ED4789BEAB0BC37822 /* Pods-crowdfinder.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

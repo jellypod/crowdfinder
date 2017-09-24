@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>581277249682-3eh6vkqfdoucsuijo9f21345kbnia58i.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.581277249682-3eh6vkqfdoucsuijo9f21345kbnia58i</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAkCvhFpdJlMI7z3ecJ6xs7f8aaKD6tlM4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>581277249682</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.rchalla.ios.crowdfinder</string>
+	<key>PROJECT_ID</key>
+	<string>testdating-59ecc</string>
+	<key>STORAGE_BUCKET</key>
+	<string>testdating-59ecc.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<false/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:581277249682:ios:c241ed8998966b82</string>
+	<key>DATABASE_URL</key>
+	<string>https://testdating-59ecc.firebaseio.com</string>
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <string>No</string>
+</dict>
+</plist>

@@ -7,15 +7,25 @@
 //
 
 import UIKit
+import CoreLocation
+import FirebaseCore
+import FirebaseMessaging
+import FirebaseInstanceID
+import GoogleMaps
+import FirebaseDatabase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    var locationManager: CLLocationManager = CLLocationManager()
+    var deferringUpdates: Bool = false
+    var ref:DatabaseReference!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
+        GMSServices.provideAPIKey("AIzaSyBzQ-3RU97hourpvBIw2MpVprdfp9dHhCs")
         return true
     }
 
@@ -39,6 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        
+        ref = Database.database().reference()
+        let defaults = UserDefaults.standard
+        if let tempmyinfo = defaults.string(forKey: "uuid") {
+            self.ref.child(tempmyinfo).removeValue()
+        }
     }
 
 

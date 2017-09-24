@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A277" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +12,53 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="crowdfinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </mapView>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ER-HW-QoO">
+                                <rect key="frame" x="20" y="685" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchClick:" destination="BYZ-38-t0r" eventType="valueChanged" id="8xy-dq-Tko"/>
+                                </connections>
+                            </switch>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fh3-DA-K6g">
+                                <rect key="frame" x="310" y="686" width="84" height="30"/>
+                                <color key="backgroundColor" red="0.52106726169999995" green="0.24050712590000001" blue="0.68248951440000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="My Location"/>
+                                <connections>
+                                    <action selector="goToMyLoc:" destination="BYZ-38-t0r" eventType="touchUpInside" id="idt-QY-1Z5"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="6kR-C7-GRU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fh3-DA-K6g" secondAttribute="trailing" constant="20" id="WFG-zk-Psd"/>
+                            <constraint firstItem="7ER-HW-QoO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="XAG-Pn-F95"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="fnr-qa-uhA"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" constant="20" id="iiU-hY-3nk"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="qpQ-9M-D9Q"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7ER-HW-QoO" secondAttribute="bottom" constant="20" id="riq-AP-x0p"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ueu-Oq-ATS"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="cec-Ap-euZ" id="WYF-JV-Ja8"/>
+                        <outlet property="mapview" destination="cec-Ap-euZ" id="5o3-I6-KgY"/>
+                        <outlet property="myLoc" destination="fh3-DA-K6g" id="sOl-u0-zf9"/>
+                        <outlet property="toggleOnlineSwitch" destination="7ER-HW-QoO" id="baP-Bj-MUD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>
         </scene>
     </scenes>
 </document>
