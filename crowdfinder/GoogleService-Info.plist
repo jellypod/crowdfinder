@@ -7,36 +7,34 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>581277249682-3eh6vkqfdoucsuijo9f21345kbnia58i.apps.googleusercontent.com</string>
+	<string>1088687265905-l8g8rffdv9p1nmhp5na1hfotfu162jb3.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.581277249682-3eh6vkqfdoucsuijo9f21345kbnia58i</string>
+	<string>com.googleusercontent.apps.1088687265905-l8g8rffdv9p1nmhp5na1hfotfu162jb3</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAkCvhFpdJlMI7z3ecJ6xs7f8aaKD6tlM4</string>
+	<string>AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>581277249682</string>
+	<string>1088687265905</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.rchalla.ios.crowdfinder</string>
 	<key>PROJECT_ID</key>
-	<string>testdating-59ecc</string>
+	<string>crowdfinder-1dot0</string>
 	<key>STORAGE_BUCKET</key>
-	<string>testdating-59ecc.appspot.com</string>
+	<string>crowdfinder-1dot0.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:581277249682:ios:c241ed8998966b82</string>
+	<string>1:1088687265905:ios:3a48ef57059954f8</string>
 	<key>DATABASE_URL</key>
-	<string>https://testdating-59ecc.firebaseio.com</string>
-    <key>FirebaseAppDelegateProxyEnabled</key>
-    <string>No</string>
+	<string>https://crowdfinder-1dot0.firebaseio.com</string>
 </dict>
 </plist>

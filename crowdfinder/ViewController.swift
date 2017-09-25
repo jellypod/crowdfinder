@@ -1,27 +1,15 @@
-//
-//  ViewController.swift
-//  crowdfinder
-//
-//  Created by Ravichandra Challa on 24/9/17.
-//  Copyright © 2017 Ravichandra Challa. All rights reserved.
-//
-
 import UIKit
+import SwiftLocation
 import CoreLocation
 import MapKit
 import FirebaseDatabase
 import GoogleMaps
-import SwiftLocation
-class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringManagerDelegate,MKMapViewDelegate {
-    func cellSizeFactor(forCoordinator coordinator: FBClusteringManager) -> CGFloat {
-        return 0.0
-    }
+class ViewController: UIViewController,CLLocationManagerDelegate{
     
-    
-    @IBOutlet weak var myLoc: UIButton!
     let clusteringManager = FBClusteringManager()
     let configuration = FBAnnotationClusterViewConfiguration.default()
-    @IBOutlet weak var toggleOnlineSwitch: UISwitch!
+    @IBOutlet private var textView: UITextView?
+    @IBOutlet weak var mapView: MKMapView!
     var locManager = CLLocationManager()
     var currentLocation: CLLocation!
     let regionRadius: CLLocationDistance = 500
@@ -29,16 +17,24 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
     var userpositions = [FBAnnotation]()
     var array:[FBAnnotation] = []
     var myInfo:String = "32|Male"
-    var interest:String = "28|Female"
+    var interest:String = "28 - 32|Female"
     var ref:DatabaseReference!
     var addressFromGoogle:String = ""
-    var apikey:String = "AIzaSyA31v38thl49netspK8bL6_N682eHgT9AU"
+    var apikey:String = "AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg"
     var nearestLocations: [CLLocation] = []
     
-    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var myLoc: UIButton!
+    
+    @IBOutlet weak var overlayView: UIView!
+    
+    var isTimerRunning = false
+    
+    @IBOutlet weak var toggleOnlineSwitch: UISwitch!
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference(fromURL: "https://testdating-59ecc.firebaseio.com/")
+        mapView.layer.cornerRadius = 4
+        
+        ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
         locManager.requestAlwaysAuthorization()
         clusteringManager.delegate = self
@@ -204,34 +200,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
         
     }
     
-    func addAnnotations() -> [FBAnnotation]{
-        
-        self.array.removeAll()
-        self.clusteringManager.removeAll()
-        let query = ref.child("crowddata").queryOrdered(byChild:"myinfo").queryEqual(toValue:self.interest)
-        query.observe(.value, with: { (snapshot) in
-            for childSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
-                //print(childSnapshot)
-                
-                if self.array.count != snapshot.children.allObjects.count {
-                    
-                    guard let childDict = childSnapshot.value as? [String: Any] else { continue }
-                    _ = childDict["interest"] as? String
-                    let latlng = childDict["currlatlng"] as? String
-                    if latlng != nil{
-                        let latlngDoubleArr = (latlng as NSString?)?.components(separatedBy: ",")
-                        let lat = latlngDoubleArr?[0]
-                        let lng = latlngDoubleArr?[1]
-                        let a:FBAnnotation = FBAnnotation()
-                        a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
-                        self.array.append(a)
-                    }
-                }
-            }
-        })
-        return self.array
-    }
-    
     func startScanning() {
         let uuid = UUID(uuidString: "5A4BCFCE-174E-4BAC-A814-092E77F6B7E5")!
         print("\(uuid) AAAAAA")
@@ -242,20 +210,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
         locManager.requestAlwaysAuthorization()
     }
     
-    
-    @IBAction func goToMyLoc(_ sender: Any) {
-        Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
-            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            
-            self.mapView.setRegion(region, animated: true)
-            
-        }) { (request, last, error) in
-            request.cancel() // stop continous location monitoring on error
-            //////print("Location monitoring failed due to an error \(error)")
-        }
-    }
-    
     func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         ////print(beacons.count)
         if beacons.count > 0 {
@@ -264,6 +218,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
             updateDistance(.unknown)
         }
     }
+    
+    
+    
+    
+    
+    
     
     func updateDistance(_ distance: CLProximity) {
         UIView.animate(withDuration: 0.8) {
@@ -287,15 +247,69 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
         }
     }
     
-    func centerMapOnLocation(location: CLLocation)
-    {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
-                                                                  regionRadius * 5.0, regionRadius * 5.0)
-        mapView.setRegion(coordinateRegion, animated: true)
+    
+    @IBAction func goToMyLoc(_ sender: Any) {
+        Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            
+            self.mapView.setRegion(region, animated: true)
+            
+        }) { (request, last, error) in
+            request.cancel() // stop continous location monitoring on error
+            //////print("Location monitoring failed due to an error \(error)")
+        }
     }
     
     func getAlreadyExistingRecFromFirebase(){
         self.ref.child("crowddata").child(self.uuid).removeValue()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        getUserDefaultData()
+        
+        //get user's current loc and add to firebase, also monitor for changes in the same place.
+        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+            currentLocation = locManager.location
+            
+            Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+                ////print("new loc: \(location)")
+                if self.toggleOnlineSwitch.isOn{
+                    var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                    if nearestLoc != nil{
+                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
+                        
+                        // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                    }
+                    else{
+                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                        
+                    }
+                    
+                }
+                self.centerMapOnLocation(location: location)
+                self.mapView.showsUserLocation = true
+                
+            }) { (request, last, error) in
+                request.cancel() // stop continous location monitoring on error
+                ////print("Location monitoring failed due to an error \(error)")
+            }
+}
     }
     
     func getUserDefaultData(){
@@ -308,10 +322,315 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
             interest = tempinterest
         }
     }
+    
+    @IBOutlet weak var btnTurnOnOff: UIButton!
+    @IBAction func TurnOnOffClick(_ sender: Any) {
+        
+        Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+            ////print("new loc: \(location)")
+            if self.toggleOnlineSwitch.isOn{
+                var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                
+                if nearestLoc != nil{
+                    let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
+                    //let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                    self.ref.child("crowddata").child(self.uuid).setValue(
+                        [
+                            "interest": self.interest,
+                            "myinfo": self.myInfo,
+                            "currlatlng":"\(latlngString)"
+                        ]
+                    )
+                }else{
+                    let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                    self.ref.child("crowddata").child(self.uuid).setValue(
+                        [
+                            "interest": self.interest,
+                            "myinfo": self.myInfo,
+                            "currlatlng":"\(latlngString)"
+                        ]
+                    )
+                }
+            }
+            
+        }) { (request, last, error) in
+            request.cancel()
+        }
+    }
+    
+    func addAnnotations() -> [FBAnnotation]{
+        
+        self.array.removeAll()
+        self.clusteringManager.removeAll()
+        let query = ref.child("crowddata").queryOrdered(byChild:"interest").queryEqual(toValue:self.interest)
+        query.observe(.value, with: { (snapshot) in
+            for childSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
+                //print(childSnapshot)
+                
+                if self.array.count != snapshot.children.allObjects.count {
+                    
+                    guard let childDict = childSnapshot.value as? [String: Any] else { continue }
+                    _ = childDict["interest"] as? String
+                    let latlng = childDict["currlatlng"] as? String
+                    if latlng != nil{
+                        let latlngDoubleArr = (latlng as NSString?)?.components(separatedBy: ",")
+                        let lat = latlngDoubleArr?[0]
+                        let lng = latlngDoubleArr?[1]
+                        let a:FBAnnotation = FBAnnotation()
+                        a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
+                        self.array.append(a)
+                    }
+                }
+            }
+        })
+        return self.array
+    }
+    
+    
+    
+    func centerMapOnLocation(location: CLLocation)
+    {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+                                                                  regionRadius * 5.0, regionRadius * 5.0)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    
+    @IBOutlet weak var segmentControl: UISegmentedControl!
+    
+    
+    @IBAction func segmentChanged(_ sender: Any) {
+        if segmentControl.selectedSegmentIndex == 0{
+            mapView.mapType = .standard
+        }
+        else if segmentControl.selectedSegmentIndex == 1 {
+            mapView.mapType = .satellite
+        }
+        else if segmentControl.selectedSegmentIndex == 2{
+            mapView.mapType = .hybrid
+        }
+        
+        
+    }
+    
+    @IBAction func toggleStatusOnOff(_ sender: Any) {
+        if toggleOnlineSwitch.isOn{
+            if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+                CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+                currentLocation = locManager.location
+                
+                Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+                    ////print("new loc: \(location)")
+                    var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                    
+                    if nearestLoc != nil{
+                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
+                        
+                        //let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                    }else{
+                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                    }
+                    self.centerMapOnLocation(location: location)
+                    self.mapView.showsUserLocation = true
+                    
+                }) { (request, last, error) in
+                    request.cancel() // stop continous location monitoring on error
+                    ////print("Location monitoring failed due to an error \(error)")
+                }
+            }
+            
+        }else{
+            self.ref.child("crowddata").child(self.uuid).removeValue()
+            self.addAnnotations()
+        }
+    }
+    
+}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+extension ViewController : FBClusteringManagerDelegate {
+    
+    func cellSizeFactor(forCoordinator coordinator:FBClusteringManager) -> CGFloat {
+        return 1.0
+    }
+}
+
+
+extension ViewController : MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            let mapBoundsWidth = Double(self.mapView.bounds.size.width)
+            let mapRectWidth = self.mapView.visibleMapRect.size.width
+            let scale = mapBoundsWidth / mapRectWidth
+            
+            let annotationArray = self.clusteringManager.clusteredAnnotations(withinMapRect: self.mapView.visibleMapRect, zoomScale:scale)
+            
+            DispatchQueue.main.async {
+                self.clusteringManager.display(annotations: annotationArray, onMapView:self.mapView)
+            }
+        }
+        
+    }
+    
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        
+        var reuseId = ""
+        
+        if annotation is FBAnnotationCluster {
+            reuseId = "Cluster"
+            var clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
+            if clusterView == nil {
+                clusterView = FBAnnotationClusterView(annotation: annotation, reuseIdentifier: reuseId, configuration: self.configuration)
+            } else {
+                
+                clusterView?.annotation = annotation
+            }
+            
+            let a = annotation as! FBAnnotationCluster
+            if a.annotations.count > 1 {
+                for _ in a.annotations {
+                    let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
+                    ////print(loc)
+                    /* getAddressFromGoogle(location: loc)
+                     if addressFromGoogle != ""{
+                     a.title = addressFromGoogle
+                     
+                     }else{
+                     a.title = "\(a.coordinate.latitude),\(a.coordinate.longitude)"
+                     }
+                     let intArr = self.interest.components(separatedBy: "|")
+                     let age:String = intArr[0]
+                     let gender:String = intArr[1]
+                     a.subtitle = "Crowd: \(a.annotations.count) \(gender)s aged \(age)"
+                     
+                     clusterView!.canShowCallout = true
+                     clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
+                     
+                     let button = NavigateUIButton()
+                     button.frame = CGRect.init(x: 1, y: 1, width: 32, height: 32)
+                     button.location = loc
+                     button.addTarget(self, action: #selector(self.navigateToLocation(_:)), for: .touchUpInside)
+                     button.setTitle(addressFromGoogle, for: .normal)
+                     clusterView!.rightCalloutAccessoryView = button*/
+                    getAddressFrom(location: loc) { (address) in
+                        if address == nil{
+                            a.title = "\(a.coordinate.latitude),\(a.coordinate.longitude)"
+                        }else{
+                            a.title = address
+                        }
+                        let intArr = self.interest.components(separatedBy: "|")
+                        let age:String = intArr[0]
+                        let gender:String = intArr[1]
+                        a.subtitle = "Crowd: \(a.annotations.count) \(gender)s aged \(age)"
+                        
+                        clusterView!.canShowCallout = true
+                        clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
+                        
+                        let button = NavigateUIButton()
+                        button.frame = CGRect.init(x: 1, y: 1, width: 32, height: 32)
+                        button.location = loc
+                        button.addTarget(self, action: #selector(self.navigateToLocation(_:)), for: .touchUpInside)
+                        button.setTitle(address, for: .normal)
+                        clusterView!.rightCalloutAccessoryView = button
+                    }
+                    
+                    
+                }
+            }
+            return clusterView
+            
+        } else {
+            
+            reuseId = "Pin"
+            var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
+            if pinView == nil {
+                pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+                pinView?.pinTintColor = UIColor.purple
+            } else {
+                pinView?.annotation = annotation
+            }
+            
+            let a = annotation
+            if a.coordinate.latitude == mapView.userLocation.coordinate.latitude
+                && a.coordinate.longitude == mapView.userLocation.coordinate.longitude
+            {
+                pinView?.isHidden = true
+            }
+            
+            
+            return pinView
+        }
+        
+    }
+    
+    
+    
+    @objc func navigateToLocation(_ sender:NavigateUIButton){
+        
+        if #available(iOS 10.0, *) {
+            let placemark = MKPlacemark(coordinate: (sender.location?.coordinate)!)
+            let item = MKMapItem(placemark: placemark)
+            /* getAddressFromGoogle(location: sender.location!)
+             item.name = addressFromGoogle
+             item.openInMaps()*/
+            getAddressFrom(location: sender.location!
+            ) { (address) in
+                item.name = address
+                item.openInMaps()
+            }
+            
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
+    }
+    
+    
+    func getAddressFrom(location: CLLocation, completion:@escaping ((String?) -> Void)) {
+        let geocoder = CLGeocoder()
+        
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let placemark = placemarks?.first,
+                let subThoroughfare = placemark.subThoroughfare,
+                let thoroughfare = placemark.thoroughfare,
+                let locality = placemark.locality,
+                let administrativeArea = placemark.administrativeArea {
+                let address = subThoroughfare + " " + thoroughfare + ", " + locality + " " + administrativeArea
+                
+                return completion(address)
+                
+            }
+            completion(nil)
+        }
+    }
+    
+    func getAddressFromGoogle(location:CLLocation){
+        let googleGeocoder = GMSGeocoder()
+        googleGeocoder.reverseGeocodeCoordinate(location.coordinate) { response , error in
+            if let address = response?.firstResult() {
+                let lines = address.lines! as [String]
+                
+                self.addressFromGoogle = lines.joined(separator: "\n")
+            }
+            
+        }
     }
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double){
@@ -383,39 +702,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate,FBClusteringMan
         return closestLocation!
     }
     
-
-    @IBAction func switchClick(_ sender: Any) {
-        Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
-            ////print("new loc: \(location)")
-            if self.toggleOnlineSwitch.isOn{
-                var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
-                
-                if nearestLoc != nil{
-                    let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                    //let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                    self.ref.child("crowddata").child(self.uuid).setValue(
-                        [
-                            "interest": self.interest,
-                            "myinfo": self.myInfo,
-                            "currlatlng":"\(latlngString)"
-                        ]
-                    )
-                }else{
-                    let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                    self.ref.child("crowddata").child(self.uuid).setValue(
-                        [
-                            "interest": self.interest,
-                            "myinfo": self.myInfo,
-                            "currlatlng":"\(latlngString)"
-                        ]
-                    )
-                }
-            }
-            
-        }) { (request, last, error) in
-            request.cancel()
-        }
-    }
-    
 }
+
+
 

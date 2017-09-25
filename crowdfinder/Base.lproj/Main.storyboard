@@ -1,64 +1,132 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina5_5" orientation="portrait">
+    <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Settings View Controller-->
+        <scene sceneID="5Mt-PI-VNc">
+            <objects>
+                <viewController storyboardIdentifier="settings" id="1P8-0y-e2v" customClass="SettingsViewController" customModule="crowdfinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="A2e-ah-grL">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c0c-cv-PcR">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sc6-TL-58L">
+                                        <rect key="frame" x="8" y="28" width="359" height="38"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.53409618139266968" green="0.59629547595977783" blue="0.81492191553115845" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="sc6-TL-58L" firstAttribute="bottom" secondItem="c0c-cv-PcR" secondAttribute="bottomMargin" id="0wX-KM-RIT"/>
+                                    <constraint firstItem="sc6-TL-58L" firstAttribute="top" secondItem="c0c-cv-PcR" secondAttribute="top" constant="28" id="EOl-I2-esI"/>
+                                    <constraint firstAttribute="height" constant="74" id="Rgg-ey-4Oh"/>
+                                    <constraint firstItem="sc6-TL-58L" firstAttribute="trailing" secondItem="c0c-cv-PcR" secondAttribute="trailingMargin" id="YeT-gZ-wLf"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="dK9-fr-ttA"/>
+                                    <constraint firstItem="sc6-TL-58L" firstAttribute="leading" secondItem="c0c-cv-PcR" secondAttribute="leadingMargin" id="vtX-y7-ATd"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c0c-cv-PcR" firstAttribute="leading" secondItem="7s5-dS-fja" secondAttribute="leading" id="3qr-VT-X96"/>
+                            <constraint firstItem="c0c-cv-PcR" firstAttribute="trailing" secondItem="7s5-dS-fja" secondAttribute="trailing" id="6KT-3e-xqU"/>
+                            <constraint firstItem="c0c-cv-PcR" firstAttribute="leading" secondItem="7s5-dS-fja" secondAttribute="leading" id="Ey5-Bg-8O1"/>
+                            <constraint firstItem="c0c-cv-PcR" firstAttribute="trailing" secondItem="7s5-dS-fja" secondAttribute="trailing" id="egs-v7-NF0"/>
+                            <constraint firstItem="c0c-cv-PcR" firstAttribute="top" secondItem="7s5-dS-fja" secondAttribute="top" constant="-44" id="tm7-V1-2Mm"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7s5-dS-fja"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="f7p-E1-QRL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="843.47826086956525" y="131.25"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="crowdfinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
+                                <rect key="frame" x="0.0" y="0.0" width="374" height="778"/>
                             </mapView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ER-HW-QoO">
-                                <rect key="frame" x="20" y="685" width="51" height="31"/>
+                                <rect key="frame" x="20" y="727" width="51" height="31"/>
                                 <connections>
-                                    <action selector="switchClick:" destination="BYZ-38-t0r" eventType="valueChanged" id="8xy-dq-Tko"/>
+                                    <action selector="toggleStatusOnOff:" destination="BYZ-38-t0r" eventType="valueChanged" id="Kd8-SG-rv5"/>
                                 </connections>
                             </switch>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fh3-DA-K6g">
-                                <rect key="frame" x="310" y="686" width="84" height="30"/>
-                                <color key="backgroundColor" red="0.52106726169999995" green="0.24050712590000001" blue="0.68248951440000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="327" y="726" width="32" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="oTA-1a-1pr"/>
+                                </constraints>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="My Location"/>
+                                <state key="normal" backgroundImage="locon"/>
                                 <connections>
                                     <action selector="goToMyLoc:" destination="BYZ-38-t0r" eventType="touchUpInside" id="idt-QY-1Z5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-Tw-6pS">
+                                <rect key="frame" x="171.66666666666666" y="726" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="5Fy-Ad-3xr"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="settings"/>
+                                <connections>
+                                    <segue destination="1P8-0y-e2v" kind="presentation" id="G4L-Vs-HDc"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="cec-Ap-euZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="6kR-C7-GRU"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fh3-DA-K6g" secondAttribute="trailing" constant="20" id="WFG-zk-Psd"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="34h-Q5-IbF"/>
+                            <constraint firstItem="fh3-DA-K6g" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="DwM-zj-pPx"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="centerX" secondItem="qRC-Tw-6pS" secondAttribute="centerX" id="HY7-xY-eza"/>
+                            <constraint firstItem="fh3-DA-K6g" firstAttribute="centerY" secondItem="7ER-HW-QoO" secondAttribute="centerY" id="HeL-mR-e8D"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="baseline" secondItem="fh3-DA-K6g" secondAttribute="baseline" id="IAv-pv-LG8"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Id8-ie-Kbj"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MH0-Uc-caP"/>
+                            <constraint firstItem="cec-Ap-euZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="SJg-Ac-qdb"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="firstBaseline" secondItem="fh3-DA-K6g" secondAttribute="firstBaseline" id="Sum-NS-RSP"/>
                             <constraint firstItem="7ER-HW-QoO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="XAG-Pn-F95"/>
-                            <constraint firstItem="cec-Ap-euZ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="fnr-qa-uhA"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" constant="20" id="iiU-hY-3nk"/>
-                            <constraint firstItem="cec-Ap-euZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="qpQ-9M-D9Q"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" constant="20" id="Xm1-n6-WBd"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="top" secondItem="fh3-DA-K6g" secondAttribute="top" id="e3v-dg-NTk"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" id="qYc-Uf-kJn"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7ER-HW-QoO" secondAttribute="bottom" constant="20" id="riq-AP-x0p"/>
-                            <constraint firstItem="cec-Ap-euZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="ueu-Oq-ATS"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="mapView" destination="cec-Ap-euZ" id="WYF-JV-Ja8"/>
-                        <outlet property="mapview" destination="cec-Ap-euZ" id="5o3-I6-KgY"/>
-                        <outlet property="myLoc" destination="fh3-DA-K6g" id="sOl-u0-zf9"/>
+                        <outlet property="myLoc" destination="fh3-DA-K6g" id="CqY-mx-QHi"/>
                         <outlet property="toggleOnlineSwitch" destination="7ER-HW-QoO" id="baP-Bj-MUD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="132.68365817091455"/>
+            <point key="canvasLocation" x="133.59999999999999" y="130.78817733990149"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="locon" width="20" height="20"/>
+        <image name="settings" width="20" height="20"/>
+    </resources>
 </document>

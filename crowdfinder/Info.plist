@@ -41,6 +41,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Allow app to use location always and when in background ? </string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Allow app to use location when in use ? </string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Allow app to use location always ? </string>
     <key>NSLocationWhenInUseUsageDescription</key>
@@ -50,6 +54,7 @@
         <string>fetch</string>
         <string>location</string>
     </array>
-
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
 </dict>
 </plist>
