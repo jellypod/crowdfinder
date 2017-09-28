@@ -357,12 +357,12 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             request.cancel()
         }
     }
-    
+    var annotationPopupText:String!
     func addAnnotations() -> [FBAnnotation]{
         
         self.array.removeAll()
         self.clusteringManager.removeAll()
-        let query = ref.child("crowddata").queryOrdered(byChild:"interest").queryEqual(toValue:self.interest)
+        let query = ref.child("crowddata").queryOrdered(byChild:"myinfo").queryLimited(toFirst: 5000)
         query.observe(.value, with: { (snapshot) in
             for childSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
                 //print(childSnapshot)
@@ -370,23 +370,26 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                 if self.array.count != snapshot.children.allObjects.count {
                     
                     guard let childDict = childSnapshot.value as? [String: Any] else { continue }
-                    _ = childDict["interest"] as? String
-                    let latlng = childDict["currlatlng"] as? String
-                    if latlng != nil{
-                        let latlngDoubleArr = (latlng as NSString?)?.components(separatedBy: ",")
-                        let lat = latlngDoubleArr?[0]
-                        let lng = latlngDoubleArr?[1]
-                        let a:FBAnnotation = FBAnnotation()
-                        a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
-                        self.array.append(a)
+                    let myinfofromFB:String! = childDict["myinfo"] as? String
+                    
+                    if self.interest.contains(myinfofromFB){
+                        print("Found ...")
+                        self.annotationPopupText = myinfofromFB
+                        let latlng = childDict["currlatlng"] as? String
+                        if latlng != nil{
+                            let latlngDoubleArr = (latlng as NSString?)?.components(separatedBy: ",")
+                            let lat = latlngDoubleArr?[0]
+                            let lng = latlngDoubleArr?[1]
+                            let a:FBAnnotation = FBAnnotation()
+                            a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
+                            self.array.append(a)
+                        }
                     }
                 }
             }
         })
         return self.array
     }
-    
-    
     
     func centerMapOnLocation(location: CLLocation)
     {
@@ -395,9 +398,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
-    
     @IBOutlet weak var segmentControl: UISegmentedControl!
-    
     
     @IBAction func segmentChanged(_ sender: Any) {
         if segmentControl.selectedSegmentIndex == 0{
@@ -409,8 +410,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         else if segmentControl.selectedSegmentIndex == 2{
             mapView.mapType = .hybrid
         }
-        
-        
     }
     
     @IBAction func toggleStatusOnOff(_ sender: Any) {
@@ -537,7 +536,7 @@ extension ViewController : MKMapViewDelegate {
                         let intArr = self.interest.components(separatedBy: "|")
                         let age:String = intArr[0]
                         let gender:String = intArr[1]
-                        a.subtitle = "Crowd: \(a.annotations.count) \(gender)s aged \(age)"
+                        a.subtitle = "Crowd:\(a.annotations.count) people matching your interest"
                         
                         clusterView!.canShowCallout = true
                         clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
