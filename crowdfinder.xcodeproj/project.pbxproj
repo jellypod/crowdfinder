@@ -24,6 +24,7 @@
 		CD103B821F771DE9007A7600 /* FBAnnotationCluster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B771F771DE8007A7600 /* FBAnnotationCluster.swift */; };
 		CD103B831F771DE9007A7600 /* FBAnnotationClusterViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B781F771DE8007A7600 /* FBAnnotationClusterViewConfiguration.swift */; };
 		CD57166E1F7DB340007751BF /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57166D1F7DB340007751BF /* CustomHeaderView.swift */; };
+		CD5716721F7E34ED007751BF /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5716711F7E34EC007751BF /* HelpViewController.swift */; };
 		CDD7B6931F7785C800A9C9B7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD7B6921F7785C800A9C9B7 /* SettingsViewController.swift */; };
 		CDF605AA1F78D759006C966C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CDF605A91F78D5F8006C966C /* GoogleService-Info.plist */; };
 		CDF605AE1F78FA28006C966C /* NavigateUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF605AD1F78FA28006C966C /* NavigateUIButton.swift */; };
@@ -55,6 +56,7 @@
 		CD103B851F7720C4007A7600 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD103B8B1F77223F007A7600 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD57166D1F7DB340007751BF /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
+		CD5716711F7E34EC007751BF /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		CDA5194B1F77542B00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA5194D1F77562E00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDD7B6921F7785C800A9C9B7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				CD103B631F77192B007A7600 /* LaunchScreen.storyboard */,
 				CD103B661F77192B007A7600 /* Info.plist */,
 				CD57166D1F7DB340007751BF /* CustomHeaderView.swift */,
+				CD5716711F7E34EC007751BF /* HelpViewController.swift */,
 			);
 			path = crowdfinder;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				CD103B791F771DE9007A7600 /* FBAnnotation.swift in Sources */,
 				CDF605AE1F78FA28006C966C /* NavigateUIButton.swift in Sources */,
 				CD103B801F771DE9007A7600 /* FBZoomLevel.swift in Sources */,
+				CD5716721F7E34ED007751BF /* HelpViewController.swift in Sources */,
 				CDD7B6931F7785C800A9C9B7 /* SettingsViewController.swift in Sources */,
 				CD103B7C1F771DE9007A7600 /* FBClusteringManager.swift in Sources */,
 				CD103B821F771DE9007A7600 /* FBAnnotationCluster.swift in Sources */,

@@ -34,7 +34,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.layer.cornerRadius = 4
-        
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
         locManager.requestAlwaysAuthorization()
@@ -145,6 +144,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             //observer other user's logins and movements.
             ref.observe(.childAdded, with: { (snapshot) -> Void in
                 ////print("added") //someone logged in...
+                self.placeNameAtCoordinate = ""
                 _ = self.addAnnotations()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.clusteringManager.delegate = self
@@ -157,6 +157,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             
             ref.observe(.childRemoved, with: { (snapshot) -> Void in
                 ////print("removed") //someone logged out...
+                self.placeNameAtCoordinate = ""
                 _ = self.addAnnotations()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.clusteringManager.delegate = self
@@ -168,6 +169,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             
             ref.observe(.childChanged, with: { (snapshot) -> Void in
                 ////print("Changed...") //someone logged in...
+                self.placeNameAtCoordinate = ""
                 _ = self.addAnnotations()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.clusteringManager.delegate = self
@@ -197,6 +199,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             }
             
         }
+        
+      
         
     }
     
@@ -300,40 +304,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         }
     }
     
-    @IBOutlet weak var btnTurnOnOff: UIButton!
-    @IBAction func TurnOnOffClick(_ sender: Any) {
-        
-        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-            ////print("new loc: \(location)")
-            if self.toggleOnlineSwitch.isOn{
-                let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
-                
-                if nearestLoc != nil{
-                    let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                    //let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                    self.ref.child("crowddata").child(self.uuid).setValue(
-                        [
-                            "interest": self.interest,
-                            "myinfo": self.myInfo,
-                            "currlatlng":"\(latlngString)"
-                        ]
-                    )
-                }else{
-                    let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                    self.ref.child("crowddata").child(self.uuid).setValue(
-                        [
-                            "interest": self.interest,
-                            "myinfo": self.myInfo,
-                            "currlatlng":"\(latlngString)"
-                        ]
-                    )
-                }
-            }
-            
-        }) { (request, last, error) in
-            request.cancel()
-        }
-    }
+   
     var annotationPopupText:String!
     func addAnnotations() -> [FBAnnotation]{
         
@@ -360,6 +331,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                                 let lat = latlngDoubleArr?[0]
                                 let lng = latlngDoubleArr?[1]
                                 let a:FBAnnotation = FBAnnotation()
+                            
                                 a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
                                 self.array.append(a)
                             }
@@ -627,11 +599,10 @@ extension ViewController : MKMapViewDelegate {
             let results = json?["results"] as? Array<NSDictionary>
             if results != nil{
                 for result in results! {
-                    var types = result["types"] as? [String]
+                    let types = result["types"] as? [String]
                     if((types?.contains("bar"))! || (types?.contains("establishment"))!){
                         self.placeNameAtCoordinate = (result["name"] as? String)!
                     }
-                    print(self.placeNameAtCoordinate,"FFUUUUUUCCCCCCC")
                     if let geometry = result["geometry"] as? [String: Any] {
                         if let location = geometry["location"] as? [String: Any] {
                             

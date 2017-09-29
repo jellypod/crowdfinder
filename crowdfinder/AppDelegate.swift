@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ref = Database.database().reference()
         let defaults = UserDefaults.standard
         if let tempmyinfo = defaults.string(forKey: "uuid") {
-            self.ref.child(tempmyinfo).removeValue()
+            self.ref.child("crowddata").child(tempmyinfo).removeValue()
         }
     }
 

@@ -18,8 +18,8 @@ class SettingsViewController: FormViewController {
     var prefAge:String = ""
     var prefGender:String = ""
     
-    let bgColor:UIColor = UIColor(red: 182/255, green: 220/255, blue: 255/255, alpha: 1.0)
-    let tintColor:UIColor = UIColor(red: 71/255, green: 136/255, blue: 199/255, alpha: 1.0)
+    let bgColor:UIColor = UIColor(red: 213/255, green: 86/255, blue: 87/255, alpha: 1.0)
+    let tintColor:UIColor = UIColor(red: 213/255, green: 86/255, blue: 87/255, alpha: 1.0)
    
     func getSetUserDefaultData(){
         let defaults = UserDefaults.standard
@@ -51,6 +51,8 @@ class SettingsViewController: FormViewController {
         self.tableView?.tintColor = tintColor
         
         form +++ Section(header: "Preferences", footer: "")
+       
+        
         form +++ Section("Your Details")
             
             <<< TextRow(){ row in
@@ -125,6 +127,7 @@ class SettingsViewController: FormViewController {
        +++ Section("")
             <<< ButtonRow("Submit") {
                 $0.title = "Save"
+                $0.cell.detailTextLabel?.text = "AAA"
                 $0.cell.backgroundColor = .white
                 $0.cell.tintColor = tintColor
                 
