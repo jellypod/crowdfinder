@@ -18,42 +18,13 @@
                     <view key="view" contentMode="scaleToFill" id="A2e-ah-grL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c0c-cv-PcR">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sc6-TL-58L">
-                                        <rect key="frame" x="8" y="28" width="359" height="38"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.53409618139266968" green="0.59629547595977783" blue="0.81492191553115845" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstItem="sc6-TL-58L" firstAttribute="bottom" secondItem="c0c-cv-PcR" secondAttribute="bottomMargin" id="0wX-KM-RIT"/>
-                                    <constraint firstItem="sc6-TL-58L" firstAttribute="top" secondItem="c0c-cv-PcR" secondAttribute="top" constant="28" id="EOl-I2-esI"/>
-                                    <constraint firstAttribute="height" constant="74" id="Rgg-ey-4Oh"/>
-                                    <constraint firstItem="sc6-TL-58L" firstAttribute="trailing" secondItem="c0c-cv-PcR" secondAttribute="trailingMargin" id="YeT-gZ-wLf"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="dK9-fr-ttA"/>
-                                    <constraint firstItem="sc6-TL-58L" firstAttribute="leading" secondItem="c0c-cv-PcR" secondAttribute="leadingMargin" id="vtX-y7-ATd"/>
-                                </constraints>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="c0c-cv-PcR" firstAttribute="leading" secondItem="7s5-dS-fja" secondAttribute="leading" id="3qr-VT-X96"/>
-                            <constraint firstItem="c0c-cv-PcR" firstAttribute="trailing" secondItem="7s5-dS-fja" secondAttribute="trailing" id="6KT-3e-xqU"/>
-                            <constraint firstItem="c0c-cv-PcR" firstAttribute="leading" secondItem="7s5-dS-fja" secondAttribute="leading" id="Ey5-Bg-8O1"/>
-                            <constraint firstItem="c0c-cv-PcR" firstAttribute="trailing" secondItem="7s5-dS-fja" secondAttribute="trailing" id="egs-v7-NF0"/>
-                            <constraint firstItem="c0c-cv-PcR" firstAttribute="top" secondItem="7s5-dS-fja" secondAttribute="top" constant="-44" id="tm7-V1-2Mm"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="7s5-dS-fja"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7p-E1-QRL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="843.47826086956525" y="131.25"/>
+            <point key="canvasLocation" x="842.39999999999998" y="130.78817733990149"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -63,11 +34,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
-                                <rect key="frame" x="0.0" y="0.0" width="374" height="778"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
+                                <rect key="frame" x="0.0" y="0.0" width="376" height="778"/>
                             </mapView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ER-HW-QoO">
                                 <rect key="frame" x="20" y="727" width="51" height="31"/>
+                                <color key="tintColor" red="0.66902792450000004" green="0.73128575090000003" blue="0.9488992691" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="onTintColor" red="0.71927612809999997" green="0.81117069399999997" blue="0.88353535429999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <connections>
                                     <action selector="toggleStatusOnOff:" destination="BYZ-38-t0r" eventType="valueChanged" id="Kd8-SG-rv5"/>
                                 </connections>
@@ -85,7 +58,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-Tw-6pS">
-                                <rect key="frame" x="171.66666666666666" y="726" width="32" height="32"/>
+                                <rect key="frame" x="172" y="726" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="5Fy-Ad-3xr"/>
                                 </constraints>
@@ -94,16 +67,25 @@
                                     <segue destination="1P8-0y-e2v" kind="presentation" id="G4L-Vs-HDc"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="help" translatesAutoresizingMaskIntoConstraints="NO" id="BMw-ck-t4T">
+                                <rect key="frame" x="329" y="44" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="aBw-4G-Zla"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="34h-Q5-IbF"/>
+                            <constraint firstItem="BMw-ck-t4T" firstAttribute="leading" secondItem="cec-Ap-euZ" secondAttribute="trailing" constant="-46.666666666666686" id="5zk-XA-lov"/>
+                            <constraint firstItem="BMw-ck-t4T" firstAttribute="trailing" secondItem="fh3-DA-K6g" secondAttribute="trailing" constant="2" id="6xI-If-wiF"/>
                             <constraint firstItem="fh3-DA-K6g" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="DwM-zj-pPx"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="centerX" secondItem="qRC-Tw-6pS" secondAttribute="centerX" id="HY7-xY-eza"/>
                             <constraint firstItem="fh3-DA-K6g" firstAttribute="centerY" secondItem="7ER-HW-QoO" secondAttribute="centerY" id="HeL-mR-e8D"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="baseline" secondItem="fh3-DA-K6g" secondAttribute="baseline" id="IAv-pv-LG8"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Id8-ie-Kbj"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="MH0-Uc-caP"/>
+                            <constraint firstItem="BMw-ck-t4T" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Pvw-SL-eO0"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="SJg-Ac-qdb"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="firstBaseline" secondItem="fh3-DA-K6g" secondAttribute="firstBaseline" id="Sum-NS-RSP"/>
                             <constraint firstItem="7ER-HW-QoO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="XAG-Pn-F95"/>
@@ -126,6 +108,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="help" width="33" height="33"/>
         <image name="locon" width="20" height="20"/>
         <image name="settings" width="20" height="20"/>
     </resources>

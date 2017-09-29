@@ -14,6 +14,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     var currentLocation: CLLocation!
     let regionRadius: CLLocationDistance = 500
     var uuid:String = ""
+    var placeNameAtCoordinate:String = ""
     var userpositions = [FBAnnotation]()
     var array:[FBAnnotation] = []
     var myInfo:String = "32|Male"
@@ -41,7 +42,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         mapView.delegate = self
         
         getUserDefaultData()
-        startScanning()
         let status  = CLLocationManager.authorizationStatus()
         if status == .notDetermined {
             locManager.requestWhenInUseAuthorization()
@@ -65,10 +65,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
             currentLocation = locManager.location
             
-            Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+            Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 ////print("new loc: \(location)")
                 if self.toggleOnlineSwitch.isOn{
-                    var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
                     if nearestLoc != nil{
                         let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
                         
@@ -103,10 +103,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             }
             
             
-            Location.getLocation(accuracy: .house, frequency: .significant, success: { (_, location) in
+            Location.getLocation(accuracy: .block, frequency: .significant, success: { (_, location) in
                 ////print("new loc: \(location)")
                 if self.toggleOnlineSwitch.isOn{
-                    var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
                     if nearestLoc != nil{
                         let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
                         // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
@@ -128,7 +128,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                         )
                     }
                     
-                    //self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500)
+                    //self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200)
                     
                 }
                 self.centerMapOnLocation(location: location)
@@ -145,19 +145,19 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             //observer other user's logins and movements.
             ref.observe(.childAdded, with: { (snapshot) -> Void in
                 ////print("added") //someone logged in...
-                self.addAnnotations()
+                _ = self.addAnnotations()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.clusteringManager.delegate = self
                     self.mapView.delegate = self
                     self.clusteringManager.removeAll()
                     self.clusteringManager.add(annotations: self.array)
-                    self.mapView.annotations.reversed()
+                    _ = self.mapView.annotations.reversed()
                 }
             })
             
             ref.observe(.childRemoved, with: { (snapshot) -> Void in
                 ////print("removed") //someone logged out...
-                self.addAnnotations()
+                _ = self.addAnnotations()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.clusteringManager.delegate = self
                     self.mapView.delegate = self
@@ -168,7 +168,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             
             ref.observe(.childChanged, with: { (snapshot) -> Void in
                 ////print("Changed...") //someone logged in...
-                self.addAnnotations()
+                _ = self.addAnnotations()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     self.clusteringManager.delegate = self
                     self.mapView.delegate = self
@@ -200,30 +200,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         
     }
     
-    func startScanning() {
-        let uuid = UUID(uuidString: "5A4BCFCE-174E-4BAC-A814-092E77F6B7E5")!
-        print("\(uuid) AAAAAA")
-        let beaconRegion = CLBeaconRegion(proximityUUID: uuid, major: 123, minor: 45, identifier: "com.testdating.beaconRegion")
-        
-        locManager.startMonitoring(for: beaconRegion)
-        locManager.startRangingBeacons(in: beaconRegion)
-        locManager.requestAlwaysAuthorization()
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
-        ////print(beacons.count)
-        if beacons.count > 0 {
-            updateDistance(beacons[0].proximity)
-        } else {
-            updateDistance(.unknown)
-        }
-    }
-    
-    
-    
-    
-    
-    
+   
     
     func updateDistance(_ distance: CLProximity) {
         UIView.animate(withDuration: 0.8) {
@@ -249,7 +226,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     
     @IBAction func goToMyLoc(_ sender: Any) {
-        Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
             let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
             let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
             
@@ -273,10 +250,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
             currentLocation = locManager.location
             
-            Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+            Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 ////print("new loc: \(location)")
                 if self.toggleOnlineSwitch.isOn{
-                    var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
                     if nearestLoc != nil{
                         let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
                         
@@ -326,10 +303,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     @IBOutlet weak var btnTurnOnOff: UIButton!
     @IBAction func TurnOnOffClick(_ sender: Any) {
         
-        Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
             ////print("new loc: \(location)")
             if self.toggleOnlineSwitch.isOn{
-                var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
                 
                 if nearestLoc != nil{
                     let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
@@ -372,8 +349,23 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                     guard let childDict = childSnapshot.value as? [String: Any] else { continue }
                     let myinfofromFB:String! = childDict["myinfo"] as? String
                     
-                    if self.interest.contains(myinfofromFB){
-                        print("Found ...")
+                    if self.interest.contains("Any"){
+                        let tempMyInfo = childDict["myinfo"] as? String // 32|Female 33|Male
+                        var tempMyInfoArr = tempMyInfo?.components(separatedBy: "|")
+                        if self.interest.contains(tempMyInfoArr![0]) && childSnapshot.key != self.uuid {
+                            self.annotationPopupText = myinfofromFB
+                            let latlng = childDict["currlatlng"] as? String
+                            if latlng != nil{
+                                let latlngDoubleArr = (latlng as NSString?)?.components(separatedBy: ",")
+                                let lat = latlngDoubleArr?[0]
+                                let lng = latlngDoubleArr?[1]
+                                let a:FBAnnotation = FBAnnotation()
+                                a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
+                                self.array.append(a)
+                            }
+                        }
+                    }
+                    else if self.interest.contains(myinfofromFB) && childSnapshot.key != self.uuid{
                         self.annotationPopupText = myinfofromFB
                         let latlng = childDict["currlatlng"] as? String
                         if latlng != nil{
@@ -418,9 +410,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                 CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
                 currentLocation = locManager.location
                 
-                Location.getLocation(accuracy: .house, frequency: .oneShot, success: { (_, location) in
+                Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                     ////print("new loc: \(location)")
-                    var nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:500) as? CLLocation
+                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
                     
                     if nearestLoc != nil{
                         let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
@@ -454,7 +446,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             
         }else{
             self.ref.child("crowddata").child(self.uuid).removeValue()
-            self.addAnnotations()
+            _ = self.addAnnotations()
         }
     }
     
@@ -505,38 +497,19 @@ extension ViewController : MKMapViewDelegate {
             if a.annotations.count > 1 {
                 for _ in a.annotations {
                     let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
-                    ////print(loc)
-                    /* getAddressFromGoogle(location: loc)
-                     if addressFromGoogle != ""{
-                     a.title = addressFromGoogle
-                     
-                     }else{
-                     a.title = "\(a.coordinate.latitude),\(a.coordinate.longitude)"
-                     }
-                     let intArr = self.interest.components(separatedBy: "|")
-                     let age:String = intArr[0]
-                     let gender:String = intArr[1]
-                     a.subtitle = "Crowd: \(a.annotations.count) \(gender)s aged \(age)"
-                     
-                     clusterView!.canShowCallout = true
-                     clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
-                     
-                     let button = NavigateUIButton()
-                     button.frame = CGRect.init(x: 1, y: 1, width: 32, height: 32)
-                     button.location = loc
-                     button.addTarget(self, action: #selector(self.navigateToLocation(_:)), for: .touchUpInside)
-                     button.setTitle(addressFromGoogle, for: .normal)
-                     clusterView!.rightCalloutAccessoryView = button*/
+                    fetchPlacesNearCoordinate(coordinate: loc.coordinate, radius: 10)
                     getAddressFrom(location: loc) { (address) in
                         if address == nil{
                             a.title = "\(a.coordinate.latitude),\(a.coordinate.longitude)"
                         }else{
-                            a.title = address
+                            if self.placeNameAtCoordinate != ""{
+                                a.title = self.placeNameAtCoordinate
+                            }else{
+                                 a.title = address
+                            }
                         }
-                        let intArr = self.interest.components(separatedBy: "|")
-                        let age:String = intArr[0]
-                        let gender:String = intArr[1]
-                        a.subtitle = "Crowd:\(a.annotations.count) people matching your interest"
+                        
+                        a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
                         
                         clusterView!.canShowCallout = true
                         clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
@@ -633,10 +606,8 @@ extension ViewController : MKMapViewDelegate {
     }
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double){
-        let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=\(radius)&types=restaurant,food,pub,bar,club&key=\(apikey)")
-        
+        let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=10&types=establishment,point_of_interest,bar&key=\(apikey)")
         let urlRequest = URLRequest(url: url!)
-        
         
         let task = URLSession.shared.dataTask(with: urlRequest) {
             (data, response, error) in
@@ -646,6 +617,7 @@ extension ViewController : MKMapViewDelegate {
                 return
             }
             
+           
             guard let responseData = data else {
                 //print("Error: did not receive data")
                 return
@@ -653,18 +625,20 @@ extension ViewController : MKMapViewDelegate {
             
             let json = try? JSONSerialization.jsonObject(with: responseData, options: []) as! NSDictionary
             let results = json?["results"] as? Array<NSDictionary>
-            //print("results = \(results!.count)")
             if results != nil{
                 for result in results! {
-                    
-                    //let name = result["name"] as! String
+                    var types = result["types"] as? [String]
+                    if((types?.contains("bar"))! || (types?.contains("establishment"))!){
+                        self.placeNameAtCoordinate = (result["name"] as? String)!
+                    }
+                    print(self.placeNameAtCoordinate,"FFUUUUUUCCCCCCC")
                     if let geometry = result["geometry"] as? [String: Any] {
                         if let location = geometry["location"] as? [String: Any] {
                             
                             let lat = location["lat"]
                             let lng = location["lng"]
                             if lat != nil && lng != nil{
-                                var loc = CLLocation(latitude: CLLocationDegrees(lat! as! NSNumber),longitude: CLLocationDegrees(lng! as! NSNumber))
+                                let loc = CLLocation(latitude: CLLocationDegrees(truncating: lat! as! NSNumber),longitude: CLLocationDegrees(truncating: lng! as! NSNumber))
                                 
                                 self.nearestLocations.append(loc)
                                 
@@ -677,7 +651,7 @@ extension ViewController : MKMapViewDelegate {
         task.resume()
         //print(nearestLocations.count)
         let userLocation = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        getClosesLocation(userLocation: userLocation)
+        _ = getClosesLocation(userLocation: userLocation)
     }
     
     func getClosesLocation(userLocation:CLLocation) -> CLLocation?

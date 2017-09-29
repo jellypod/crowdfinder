@@ -17,7 +17,6 @@ public struct FBAnnotationClusterTemplate {
 
 	let range: Range<Int>?
 	let displayMode: FBAnnotationClusterDisplayMode
-
 	public var borderWidth: CGFloat = 0
 
 	public var fontSize: CGFloat = 18
@@ -37,7 +36,8 @@ public struct FBAnnotationClusterTemplate {
 	}
 
 	public init (range: Range<Int>?, sideLength: CGFloat) {
+        
 		self.init(range: range, displayMode: .SolidColor(sideLength: sideLength,
-		                                                 color:UIColor.magenta))
+		                                                 color:UIColor(red: 71/255, green: 136/255, blue: 199/255, alpha: 1.0)))
 	}
 }
