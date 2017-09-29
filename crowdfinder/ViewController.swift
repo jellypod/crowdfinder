@@ -4,6 +4,7 @@ import CoreLocation
 import MapKit
 import FirebaseDatabase
 import GoogleMaps
+import SwiftOverlays
 class ViewController: UIViewController,CLLocationManagerDelegate{
     
     let clusteringManager = FBClusteringManager()
@@ -17,8 +18,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     var placeNameAtCoordinate:String = ""
     var userpositions = [FBAnnotation]()
     var array:[FBAnnotation] = []
-    var myInfo:String = "32|Male"
-    var interest:String = "28 - 32|Female"
+    var myInfo:String = ""
+    var interest:String = ""
     var ref:DatabaseReference!
     var addressFromGoogle:String = ""
     var apikey:String = "AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg"
@@ -31,6 +32,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     var isTimerRunning = false
     
     @IBOutlet weak var toggleOnlineSwitch: UISwitch!
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.layer.cornerRadius = 4
@@ -63,7 +65,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
             CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
             currentLocation = locManager.location
-            
+            // Wait overlay with text
+            let text = "Retrieving your location. Please wait.."
+            self.showWaitOverlayWithText(text)
             Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 ////print("new loc: \(location)")
                 if self.toggleOnlineSwitch.isOn{
@@ -95,6 +99,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                 }
                 self.centerMapOnLocation(location: location)
                 self.mapView.showsUserLocation = true
+                self.removeAllOverlays()
                 
             }) { (request, last, error) in
                 request.cancel() // stop continous location monitoring on error
@@ -195,7 +200,13 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                 uuid = NSUUID().uuidString
                 defaults.set(uuid, forKey: "uuid")
                 getAlreadyExistingRecFromFirebase()
-                self.ref.child(uuid).setValue(["uuid": uuid])
+                self.ref.child("crowddata").child(self.uuid).setValue(
+                    [
+                        "interest": "",
+                        "myinfo": "",
+                        "currlatlng":"\(000.000,000.000)"
+                    ]
+                )
             }
             
         }
@@ -247,6 +258,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         getUserDefaultData()
         
         //get user's current loc and add to firebase, also monitor for changes in the same place.
@@ -262,6 +274,15 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                         let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
                         
                         // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        
+                        let defaults = UserDefaults.standard
+                        if self.uuid == "" {
+                            self.uuid = NSUUID().uuidString
+                            defaults.set(self.uuid, forKey: "uuid")
+                            self.getAlreadyExistingRecFromFirebase()
+                            
+                        }
+                        
                         self.ref.child("crowddata").child(self.uuid).setValue(
                             [
                                 "interest": self.interest,

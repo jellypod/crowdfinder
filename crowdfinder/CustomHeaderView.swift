@@ -22,11 +22,8 @@ class CustomHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         var tintColor:UIColor = UIColor(red: 71/255, green: 136/255, blue: 199/255, alpha: 1.0)
-        self.frame = CGRect(x: 0, y: 0,width: 100, height: 30)
-        self.backgroundColor = tintColor
-        
-        
-        //self.addSubview(textField)
+        self.frame = CGRect(x: 0, y: 0,width: 100, height: 50)
+        self.backgroundColor = .white
     }
     
     required init(coder aDecoder: NSCoder) {

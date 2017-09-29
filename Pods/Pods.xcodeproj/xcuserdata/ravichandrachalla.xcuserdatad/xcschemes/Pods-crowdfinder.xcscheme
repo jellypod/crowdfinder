@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5E77582113150A9607D93F9331DD812D"
+               BlueprintIdentifier = "69EBE39E027139C894B94969FA6B0FF1"
                BuildableName = "Pods_crowdfinder.framework"
                BlueprintName = "Pods-crowdfinder"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "5E77582113150A9607D93F9331DD812D"
+            BlueprintIdentifier = "69EBE39E027139C894B94969FA6B0FF1"
             BuildableName = "Pods_crowdfinder.framework"
             BlueprintName = "Pods-crowdfinder"
             ReferencedContainer = "container:Pods.xcodeproj">

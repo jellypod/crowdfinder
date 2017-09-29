@@ -50,10 +50,40 @@ class SettingsViewController: FormViewController {
         self.tableView?.backgroundColor = bgColor
         self.tableView?.tintColor = tintColor
         
-        form +++ Section(header: "Preferences", footer: "")
+        
+        form +++ Section(){ section in
+            var header = HeaderFooterView<CustomHeaderView>(.class)
+            header.onSetupView = { view, _ in
+                 view.frame.size.height = 50
+                let label = UILabel(frame: CGRect(x: 5, y: 0, width: 180, height: 50))
+                label.textAlignment = NSTextAlignment.left
+                label.textColor = self.tintColor
+                label.text = " Preferences"
+                label.font = UIFont(name: label.font.fontName, size: 20)
+                view.addSubview(label)
+                
+            }
+            section.header = header
+            
+        }
        
         
-        form +++ Section("Your Details")
+        form +++ Section(){ section in
+            var header = HeaderFooterView<CustomHeaderView>(.class)
+            header.onSetupView = { view, _ in
+                view.backgroundColor = self.tintColor
+                view.frame.size.height = 30
+                let label = UILabel(frame: CGRect(x: 5, y: 0, width: 100, height: 30))
+                label.textColor = .white
+                label.font = UIFont(name: label.font.fontName, size: 15)
+                label.text = "Your Details"
+                
+                view.addSubview(label)
+                
+            }
+            section.header = header
+            
+            }
             
             <<< TextRow(){ row in
                 row.tag = "YourAge"
@@ -87,7 +117,22 @@ class SettingsViewController: FormViewController {
                     }
             }
             
-            +++ Section("Your Interests")
+            +++ Section(){ section in
+                var header = HeaderFooterView<CustomHeaderView>(.class)
+                header.onSetupView = { view, _ in
+                    view.backgroundColor = self.tintColor
+                    view.frame.size.height = 30
+                    let label = UILabel(frame: CGRect(x: 5, y: 0, width: 100, height: 30))
+                    label.textColor = .white
+                    label.font = UIFont(name: label.font.fontName, size: 15)
+                    label.text = "Your Interests"
+                    
+                    view.addSubview(label)
+                    
+                }
+                section.header = header
+                
+            }
             <<< PushRow<String>() { //1
                 $0.tag = "YourPrefAge"
                 $0.title = "Age Group" //2
@@ -135,6 +180,7 @@ class SettingsViewController: FormViewController {
                 .onCellSelection { [weak self] (cell, row) in
                     okTapped()
             }
+            
         
             <<< ButtonRow("Cancel") {
                 $0.title = "Cancel"
