@@ -5,8 +5,10 @@ import MapKit
 import FirebaseDatabase
 import GoogleMaps
 import SwiftOverlays
+import OnboardingKit
 class ViewController: UIViewController,CLLocationManagerDelegate{
     
+    @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     let clusteringManager = FBClusteringManager()
     let configuration = FBAnnotationClusterViewConfiguration.default()
     @IBOutlet private var textView: UITextView?
@@ -33,9 +35,18 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     @IBOutlet weak var toggleOnlineSwitch: UISwitch!
    
+    
+    @IBAction func segmentSelected(_ sender: Any) {
+        if mapTypeSegment.selectedSegmentIndex == 0 {
+            mapView.mapType = .standard
+        }else{
+            mapView.mapType = .satellite
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapView.layer.cornerRadius = 4
+        mapView.showsUserLocation = true
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
         locManager.requestAlwaysAuthorization()
@@ -352,7 +363,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                                 let lat = latlngDoubleArr?[0]
                                 let lng = latlngDoubleArr?[1]
                                 let a:FBAnnotation = FBAnnotation()
-                            
                                 a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
                                 self.array.append(a)
                             }
@@ -599,7 +609,7 @@ extension ViewController : MKMapViewDelegate {
     }
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double){
-        let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=10&types=establishment,point_of_interest,bar&key=\(apikey)")
+        let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=10&types=gym,university,establishment,point_of_interest,bar&key=\(apikey)")
         let urlRequest = URLRequest(url: url!)
         
         let task = URLSession.shared.dataTask(with: urlRequest) {

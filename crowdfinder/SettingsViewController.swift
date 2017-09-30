@@ -59,7 +59,7 @@ class SettingsViewController: FormViewController {
                 label.textAlignment = NSTextAlignment.left
                 label.textColor = self.tintColor
                 label.text = " Preferences"
-                label.font = UIFont(name: label.font.fontName, size: 20)
+                label.font = UIFont.boldSystemFont(ofSize: 20)
                 view.addSubview(label)
                 
             }

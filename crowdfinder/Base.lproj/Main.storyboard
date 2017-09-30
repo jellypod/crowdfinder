@@ -35,7 +35,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
-                                <rect key="frame" x="0.0" y="0.0" width="374" height="778"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                             </mapView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ER-HW-QoO">
                                 <rect key="frame" x="20" y="727" width="51" height="31"/>
@@ -67,6 +67,21 @@
                                     <segue destination="1P8-0y-e2v" kind="presentation" id="G4L-Vs-HDc"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="M1i-zb-9zf">
+                                <rect key="frame" x="20" y="59" width="339" height="33"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="v7m-r6-mnA"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Standard"/>
+                                    <segment title="Satellite"/>
+                                </segments>
+                                <color key="tintColor" red="0.78738981490000004" green="0.2464441359" blue="0.27221894260000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <action selector="segmentSelected:" destination="BYZ-38-t0r" eventType="valueChanged" id="wdb-gL-k2L"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -77,17 +92,21 @@
                             <constraint firstItem="fh3-DA-K6g" firstAttribute="centerY" secondItem="7ER-HW-QoO" secondAttribute="centerY" id="HeL-mR-e8D"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="baseline" secondItem="fh3-DA-K6g" secondAttribute="baseline" id="IAv-pv-LG8"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Id8-ie-Kbj"/>
+                            <constraint firstItem="M1i-zb-9zf" firstAttribute="trailing" secondItem="fh3-DA-K6g" secondAttribute="trailing" id="POJ-bT-4EY"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="SJ7-c5-k6f"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="firstBaseline" secondItem="fh3-DA-K6g" secondAttribute="firstBaseline" id="Sum-NS-RSP"/>
                             <constraint firstItem="7ER-HW-QoO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="XAG-Pn-F95"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" constant="20" id="Xm1-n6-WBd"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="top" secondItem="fh3-DA-K6g" secondAttribute="top" id="e3v-dg-NTk"/>
+                            <constraint firstItem="M1i-zb-9zf" firstAttribute="leading" secondItem="7ER-HW-QoO" secondAttribute="leading" id="krN-VY-56k"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" id="qYc-Uf-kJn"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7ER-HW-QoO" secondAttribute="bottom" constant="20" id="riq-AP-x0p"/>
+                            <constraint firstItem="M1i-zb-9zf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="sv1-s4-no3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="mapTypeSegment" destination="M1i-zb-9zf" id="HFa-3b-qti"/>
                         <outlet property="mapView" destination="cec-Ap-euZ" id="WYF-JV-Ja8"/>
                         <outlet property="myLoc" destination="fh3-DA-K6g" id="CqY-mx-QHi"/>
                         <outlet property="toggleOnlineSwitch" destination="7ER-HW-QoO" id="baP-Bj-MUD"/>
