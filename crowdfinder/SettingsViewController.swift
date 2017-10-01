@@ -17,9 +17,8 @@ class SettingsViewController: FormViewController {
     
     var prefAge:String = ""
     var prefGender:String = ""
-    
-    let bgColor:UIColor = UIColor(red: 213/255, green: 86/255, blue: 87/255, alpha: 1.0)
-    let tintColor:UIColor = UIColor(red: 213/255, green: 86/255, blue: 87/255, alpha: 1.0)
+    let bgColor:UIColor = UIColor(red: 188/255, green: 59/255, blue: 35/255, alpha: 1.0)
+    let tintColor:UIColor = UIColor(red: 188/255, green: 59/255, blue: 35/255, alpha: 1.0)
    
     func getSetUserDefaultData(){
         let defaults = UserDefaults.standard

@@ -46,6 +46,54 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        
+    }
+    
+   
+    
+    func updateDistance(_ distance: CLProximity) {
+        UIView.animate(withDuration: 0.8) {
+            switch distance {
+            case .unknown:
+                self.view.backgroundColor = UIColor.gray
+                //print("Unknown......")
+                
+            case .far:
+                self.view.backgroundColor = UIColor.blue
+                print("Far......")
+                
+            case .near:
+                self.view.backgroundColor = UIColor.orange
+                print("Near......")
+                
+            case .immediate:
+                self.view.backgroundColor = UIColor.red
+                print("Immediate......")
+            }
+        }
+    }
+    
+    
+    @IBAction func goToMyLoc(_ sender: Any) {
+        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
+            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            
+            self.mapView.setRegion(region, animated: true)
+            
+        }) { (request, last, error) in
+            request.cancel() // stop continous location monitoring on error
+            //////print("Location monitoring failed due to an error \(error)")
+        }
+    }
+    
+    func getAlreadyExistingRecFromFirebase(){
+        self.ref.child("crowddata").child(self.uuid).removeValue()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         mapView.showsUserLocation = true
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
@@ -222,107 +270,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             
         }
         
-      
         
-    }
-    
-   
-    
-    func updateDistance(_ distance: CLProximity) {
-        UIView.animate(withDuration: 0.8) {
-            switch distance {
-            case .unknown:
-                self.view.backgroundColor = UIColor.gray
-                //print("Unknown......")
-                
-            case .far:
-                self.view.backgroundColor = UIColor.blue
-                print("Far......")
-                
-            case .near:
-                self.view.backgroundColor = UIColor.orange
-                print("Near......")
-                
-            case .immediate:
-                self.view.backgroundColor = UIColor.red
-                print("Immediate......")
-            }
-        }
-    }
-    
-    
-    @IBAction func goToMyLoc(_ sender: Any) {
-        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            
-            self.mapView.setRegion(region, animated: true)
-            
-        }) { (request, last, error) in
-            request.cancel() // stop continous location monitoring on error
-            //////print("Location monitoring failed due to an error \(error)")
-        }
-    }
-    
-    func getAlreadyExistingRecFromFirebase(){
-        self.ref.child("crowddata").child(self.uuid).removeValue()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
-        getUserDefaultData()
-        
-        //get user's current loc and add to firebase, also monitor for changes in the same place.
-        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
-            currentLocation = locManager.location
-            
-            Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-                ////print("new loc: \(location)")
-                if self.toggleOnlineSwitch.isOn{
-                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
-                    if nearestLoc != nil{
-                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                        
-                        // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        
-                        let defaults = UserDefaults.standard
-                        if self.uuid == "" {
-                            self.uuid = NSUUID().uuidString
-                            defaults.set(self.uuid, forKey: "uuid")
-                            self.getAlreadyExistingRecFromFirebase()
-                            
-                        }
-                        
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }
-                    else{
-                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                        
-                    }
-                    
-                }
-                self.centerMapOnLocation(location: location)
-                self.mapView.showsUserLocation = true
-                
-            }) { (request, last, error) in
-                request.cancel() // stop continous location monitoring on error
-                ////print("Location monitoring failed due to an error \(error)")
-            }
-}
+       
     }
     
     func getUserDefaultData(){
@@ -342,12 +291,13 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         
         self.array.removeAll()
         self.clusteringManager.removeAll()
-        let query = ref.child("crowddata").queryOrdered(byChild:"myinfo").queryLimited(toFirst: 5000)
+        let query = ref.child("crowddata").queryOrdered(byChild:"myinfo")
         query.observe(.value, with: { (snapshot) in
+            
             for childSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
-                //print(childSnapshot)
                 
-                if self.array.count != snapshot.children.allObjects.count {
+                print((snapshot.children.allObjects as! [DataSnapshot]).count,"<><>><><<><><><><><<><>",self.array.count)
+                if self.array.count != (snapshot.children.allObjects as! [DataSnapshot]).count {
                     
                     guard let childDict = childSnapshot.value as? [String: Any] else { continue }
                     let myinfofromFB:String! = childDict["myinfo"] as? String
