@@ -38,6 +38,7 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" showsCompass="NO" showsPointsOfInterest="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cec-Ap-euZ">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="778"/>
                                 <color key="backgroundColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
                             </mapView>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ER-HW-QoO">
                                 <rect key="frame" x="20" y="727" width="51" height="31"/>
@@ -59,12 +60,13 @@
                                     <action selector="goToMyLoc:" destination="BYZ-38-t0r" eventType="touchUpInside" id="idt-QY-1Z5"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-Tw-6pS">
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-Tw-6pS">
                                 <rect key="frame" x="171.66666666666666" y="726" width="32" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="5Fy-Ad-3xr"/>
                                 </constraints>
                                 <color key="tintColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <size key="titleShadowOffset" width="3" height="5"/>
                                 <state key="normal" backgroundImage="settings">
                                     <color key="titleColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>

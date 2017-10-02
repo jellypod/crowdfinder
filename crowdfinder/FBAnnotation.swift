@@ -13,7 +13,7 @@ import MapKit
 open class FBAnnotation: NSObject {
     
     open var coordinate = CLLocationCoordinate2D()
-    open var title: String? =  "cluster"
+    open var title: String? =  "Your interest - 1 person"
     
 }
 

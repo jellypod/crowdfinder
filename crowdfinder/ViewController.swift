@@ -7,7 +7,7 @@ import GoogleMaps
 import SwiftOverlays
 import OnboardingKit
 class ViewController: UIViewController,CLLocationManagerDelegate{
-    
+    let bgColor:UIColor = UIColor(red: 188/255, green: 59/255, blue: 35/255, alpha: 1.0)
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     let clusteringManager = FBClusteringManager()
     let configuration = FBAnnotationClusterViewConfiguration.default()
@@ -46,62 +46,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-    }
-    
-   
-    
-    func updateDistance(_ distance: CLProximity) {
-        UIView.animate(withDuration: 0.8) {
-            switch distance {
-            case .unknown:
-                self.view.backgroundColor = UIColor.gray
-                //print("Unknown......")
-                
-            case .far:
-                self.view.backgroundColor = UIColor.blue
-                print("Far......")
-                
-            case .near:
-                self.view.backgroundColor = UIColor.orange
-                print("Near......")
-                
-            case .immediate:
-                self.view.backgroundColor = UIColor.red
-                print("Immediate......")
-            }
-        }
-    }
-    
-    
-    @IBAction func goToMyLoc(_ sender: Any) {
-        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-            
-            self.mapView.setRegion(region, animated: true)
-            
-        }) { (request, last, error) in
-            request.cancel() // stop continous location monitoring on error
-            //////print("Location monitoring failed due to an error \(error)")
-        }
-    }
-    
-    func getAlreadyExistingRecFromFirebase(){
-        self.ref.child("crowddata").child(self.uuid).removeValue()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         mapView.showsUserLocation = true
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
         locManager.requestAlwaysAuthorization()
         clusteringManager.delegate = self
         mapView.delegate = self
-        
         getUserDefaultData()
+        
         let status  = CLLocationManager.authorizationStatus()
         if status == .notDetermined {
             locManager.requestWhenInUseAuthorization()
@@ -118,8 +70,49 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             return
         }
         
+        //observer other user's logins and movements.
+        ref.observe(.childAdded, with: { (snapshot) -> Void in
+            ////print("added") //someone logged in...
+            self.placeNameAtCoordinate = ""
+            _ = self.addAnnotations()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.clusteringManager.delegate = self
+                self.mapView.delegate = self
+                self.clusteringManager.removeAll()
+                self.clusteringManager.add(annotations: self.array)
+                _ = self.mapView.annotations.reversed()
+            }
+        })
         
+        ref.observe(.childRemoved, with: { (snapshot) -> Void in
+            ////print("removed") //someone logged out...
+            self.placeNameAtCoordinate = ""
+            _ = self.addAnnotations()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.clusteringManager.delegate = self
+                self.mapView.delegate = self
+                self.clusteringManager.removeAll()
+                self.clusteringManager.add(annotations: self.array)
+            }
+        })
         
+        ref.observe(.childChanged, with: { (snapshot) -> Void in
+            ////print("Changed...") //someone logged in...
+            self.placeNameAtCoordinate = ""
+            _ = self.addAnnotations()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.clusteringManager.delegate = self
+                self.mapView.delegate = self
+                self.clusteringManager.removeAll()
+                self.clusteringManager.add(annotations: self.array)
+            }
+        })
+        significantLocation()
+        
+    }
+    
+    func oneShotLocation()
+    {
         //get user's current loc and add to firebase, also monitor for changes in the same place.
         if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
             CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
@@ -164,114 +157,83 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
                 request.cancel() // stop continous location monitoring on error
                 ////print("Location monitoring failed due to an error \(error)")
             }
-            
-            
-            Location.getLocation(accuracy: .block, frequency: .significant, success: { (_, location) in
-                ////print("new loc: \(location)")
-                if self.toggleOnlineSwitch.isOn{
-                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
-                    if nearestLoc != nil{
-                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                        // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }else{
-                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }
-                    
-                    //self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200)
-                    
-                }
-                self.centerMapOnLocation(location: location)
-                self.mapView.showsUserLocation = true
-                
-                
-            }) { (request, last, error) in
-                request.cancel() // stop continous location monitoring on error
-                ////print("Location monitoring failed due to an error \(error)")
-            }
-            
-            
-            
-            //observer other user's logins and movements.
-            ref.observe(.childAdded, with: { (snapshot) -> Void in
-                ////print("added") //someone logged in...
-                self.placeNameAtCoordinate = ""
-                _ = self.addAnnotations()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    self.clusteringManager.delegate = self
-                    self.mapView.delegate = self
-                    self.clusteringManager.removeAll()
-                    self.clusteringManager.add(annotations: self.array)
-                    _ = self.mapView.annotations.reversed()
-                }
-            })
-            
-            ref.observe(.childRemoved, with: { (snapshot) -> Void in
-                ////print("removed") //someone logged out...
-                self.placeNameAtCoordinate = ""
-                _ = self.addAnnotations()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    self.clusteringManager.delegate = self
-                    self.mapView.delegate = self
-                    self.clusteringManager.removeAll()
-                    self.clusteringManager.add(annotations: self.array)
-                }
-            })
-            
-            ref.observe(.childChanged, with: { (snapshot) -> Void in
-                ////print("Changed...") //someone logged in...
-                self.placeNameAtCoordinate = ""
-                _ = self.addAnnotations()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    self.clusteringManager.delegate = self
-                    self.mapView.delegate = self
-                    self.clusteringManager.removeAll()
-                    self.clusteringManager.add(annotations: self.array)
-                }
-            })
-            
-            
-            let defaults = UserDefaults.standard
-            if let tempuuid = defaults.string(forKey: "uuid") {
-                ////print(tempuuid)
-                uuid = tempuuid
-                self.ref.child("crowddata").child(self.uuid).setValue(
-                    [
-                        "interest": self.interest,
-                        "myinfo": self.myInfo,
-                        "currlatlng":"\(000.000,000.000)"
-                    ]
-                )
-            }else{
-                uuid = NSUUID().uuidString
-                defaults.set(uuid, forKey: "uuid")
-                getAlreadyExistingRecFromFirebase()
-                self.ref.child("crowddata").child(self.uuid).setValue(
-                    [
-                        "interest": "",
-                        "myinfo": "",
-                        "currlatlng":"\(000.000,000.000)"
-                    ]
-                )
-            }
-            
+        
+        }
+    }
+    
+    func significantLocation()
+    {
+        let defaults = UserDefaults.standard
+        if let tempuuid = defaults.string(forKey: "uuid") {
+            ////print(tempuuid)
+            uuid = tempuuid
+            self.ref.child("crowddata").child(self.uuid).setValue(
+                [
+                    "interest": self.interest,
+                    "myinfo": self.myInfo,
+                    "currlatlng":"\(000.000,000.000)"
+                ]
+            )
+        }else{
+            uuid = NSUUID().uuidString
+            defaults.set(uuid, forKey: "uuid")
+            getAlreadyExistingRecFromFirebase()
+            self.ref.child("crowddata").child(self.uuid).setValue(
+                [
+                    "interest": "",
+                    "myinfo": "",
+                    "currlatlng":"\(000.000,000.000)"
+                ]
+            )
         }
         
-        
-       
+    }
+    
+    
+    func updateDistance(_ distance: CLProximity) {
+        UIView.animate(withDuration: 0.8) {
+            switch distance {
+            case .unknown:
+                self.view.backgroundColor = UIColor.gray
+                //print("Unknown......")
+                
+            case .far:
+                self.view.backgroundColor = UIColor.blue
+                print("Far......")
+                
+            case .near:
+                self.view.backgroundColor = UIColor.orange
+                print("Near......")
+                
+            case .immediate:
+                self.view.backgroundColor = UIColor.red
+                print("Immediate......")
+            }
+        }
+    }
+    
+    
+    @IBAction func goToMyLoc(_ sender: Any) {
+        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
+            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            
+            self.mapView.setRegion(region, animated: true)
+            
+        }) { (request, last, error) in
+            request.cancel() // stop continous location monitoring on error
+            //////print("Location monitoring failed due to an error \(error)")
+        }
+    }
+    
+    func getAlreadyExistingRecFromFirebase(){
+        self.ref.child("crowddata").child(self.uuid).removeValue()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        getUserDefaultData()
+        oneShotLocation()
+        _ = self.addAnnotations()
     }
     
     func getUserDefaultData(){
@@ -296,7 +258,7 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             
             for childSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
                 
-                print((snapshot.children.allObjects as! [DataSnapshot]).count,"<><>><><<><><><><><<><>",self.array.count)
+                print(self.interest)
                 if self.array.count != (snapshot.children.allObjects as! [DataSnapshot]).count {
                     
                     guard let childDict = childSnapshot.value as? [String: Any] else { continue }
@@ -402,7 +364,6 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             _ = self.addAnnotations()
         }
     }
-    
 }
 
 extension ViewController : FBClusteringManagerDelegate {
@@ -486,7 +447,7 @@ extension ViewController : MKMapViewDelegate {
             var pinView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId) as? MKPinAnnotationView
             if pinView == nil {
                 pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-                pinView?.pinTintColor = UIColor.purple
+                pinView?.pinTintColor = bgColor
             } else {
                 pinView?.annotation = annotation
             }
@@ -499,7 +460,7 @@ extension ViewController : MKMapViewDelegate {
             }
             
             
-            return pinView
+            return nil
         }
         
     }
@@ -559,7 +520,7 @@ extension ViewController : MKMapViewDelegate {
     }
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double){
-        let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=10&types=gym,university,establishment,point_of_interest,bar&key=\(apikey)")
+        let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=10&types=establishment,point_of_interest,bar&key=\(apikey)")
         let urlRequest = URLRequest(url: url!)
         
         let task = URLSession.shared.dataTask(with: urlRequest) {
