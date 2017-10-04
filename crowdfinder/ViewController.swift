@@ -7,7 +7,7 @@ import GoogleMaps
 import SwiftOverlays
 import OnboardingKit
 class ViewController: UIViewController,CLLocationManagerDelegate{
-    let bgColor:UIColor = UIColor(red: 188/255, green: 59/255, blue: 35/255, alpha: 1.0)
+    let bgColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     let clusteringManager = FBClusteringManager()
     let configuration = FBAnnotationClusterViewConfiguration.default()
@@ -163,6 +163,52 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     func significantLocation()
     {
+        //get user's current loc and add to firebase, also monitor for changes in the same place.
+        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+            currentLocation = locManager.location
+            // Wait overlay with text
+            let text = "Retrieving your location. Please wait.."
+            self.showWaitOverlayWithText(text)
+            Location.getLocation(accuracy: .block, frequency: .significant, success: { (_, location) in
+                ////print("new loc: \(location)")
+                if self.toggleOnlineSwitch.isOn{
+                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
+                    if nearestLoc != nil{
+                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
+                        
+                        // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                    }
+                    else{
+                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                        
+                    }
+                    
+                }
+                self.centerMapOnLocation(location: location)
+                self.mapView.showsUserLocation = true
+                self.removeAllOverlays()
+                
+            }) { (request, last, error) in
+                request.cancel() // stop continous location monitoring on error
+                ////print("Location monitoring failed due to an error \(error)")
+            }
+            
+        }
         let defaults = UserDefaults.standard
         if let tempuuid = defaults.string(forKey: "uuid") {
             ////print(tempuuid)
@@ -214,15 +260,48 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     
     @IBAction func goToMyLoc(_ sender: Any) {
-        Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-            let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        if toggleOnlineSwitch.isOn{
+            if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+                CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+                currentLocation = locManager.location
+                
+                Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
+                    ////print("new loc: \(location)")
+                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
+                    
+                    if nearestLoc != nil{
+                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
+                        
+                        //let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                    }else{
+                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+                        self.ref.child("crowddata").child(self.uuid).setValue(
+                            [
+                                "interest": self.interest,
+                                "myinfo": self.myInfo,
+                                "currlatlng":"\(latlngString)"
+                            ]
+                        )
+                    }
+                    self.centerMapOnLocation(location: location)
+                    self.mapView.showsUserLocation = true
+                    
+                }) { (request, last, error) in
+                    request.cancel() // stop continous location monitoring on error
+                    ////print("Location monitoring failed due to an error \(error)")
+                }
+            }
             
-            self.mapView.setRegion(region, animated: true)
-            
-        }) { (request, last, error) in
-            request.cancel() // stop continous location monitoring on error
-            //////print("Location monitoring failed due to an error \(error)")
+        }else{
+            self.ref.child("crowddata").child(self.uuid).removeValue()
+            _ = self.addAnnotations()
         }
     }
     
@@ -458,11 +537,8 @@ extension ViewController : MKMapViewDelegate {
             {
                 pinView?.isHidden = true
             }
-            
-            
             return nil
         }
-        
     }
     
     
@@ -478,6 +554,7 @@ extension ViewController : MKMapViewDelegate {
             getAddressFrom(location: sender.location!
             ) { (address) in
                 item.name = address
+                
                 item.openInMaps()
             }
             
@@ -521,6 +598,7 @@ extension ViewController : MKMapViewDelegate {
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double){
         let url = URL(string: "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=\(coordinate.latitude),\(coordinate.longitude)&radius=10&types=establishment,point_of_interest,bar&key=\(apikey)")
+        print(url)
         let urlRequest = URLRequest(url: url!)
         
         let task = URLSession.shared.dataTask(with: urlRequest) {
@@ -539,6 +617,7 @@ extension ViewController : MKMapViewDelegate {
             
             let json = try? JSONSerialization.jsonObject(with: responseData, options: []) as! NSDictionary
             let results = json?["results"] as? Array<NSDictionary>
+            print(results)
             if results != nil{
                 for result in results! {
                     let types = result["types"] as? [String]
