@@ -20,8 +20,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     var placeNameAtCoordinate:String = ""
     var userpositions = [FBAnnotation]()
     var array:[FBAnnotation] = []
-    var myInfo:String = ""
-    var interest:String = ""
+    var myInfo:String = "0|Male"
+    var interest:String = "0|Male"
     var ref:DatabaseReference!
     var addressFromGoogle:String = ""
     var apikey:String = "AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg"
@@ -529,6 +529,8 @@ extension ViewController : MKMapViewDelegate {
                 pinView?.pinTintColor = bgColor
             } else {
                 pinView?.annotation = annotation
+                pinView?.isHidden = true
+                
             }
             
             let a = annotation
@@ -537,7 +539,7 @@ extension ViewController : MKMapViewDelegate {
             {
                 pinView?.isHidden = true
             }
-            return nil
+            return pinView
         }
     }
     

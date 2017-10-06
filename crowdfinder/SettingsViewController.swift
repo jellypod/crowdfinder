@@ -52,12 +52,13 @@ class SettingsViewController: FormViewController {
         
         form +++ Section(){ section in
             var header = HeaderFooterView<CustomHeaderView>(.class)
+            
             header.onSetupView = { view, _ in
                  view.frame.size.height = 50
                 let label = UILabel(frame: CGRect(x: 5, y: 0, width: 180, height: 50))
                 label.textAlignment = NSTextAlignment.left
                 label.textColor = self.tintColor
-                label.text = " Preferences"
+                label.text =  " Preferences"
                 label.font = UIFont.boldSystemFont(ofSize: 20)
                 view.addSubview(label)
                 

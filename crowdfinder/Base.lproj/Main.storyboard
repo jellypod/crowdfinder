@@ -40,6 +40,33 @@
                                 <color key="backgroundColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7mV-cR-ygv">
+                                <rect key="frame" x="0.0" y="48" width="375" height="60"/>
+                                <subviews>
+                                    <segmentedControl contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="M1i-zb-9zf">
+                                        <rect key="frame" x="18" y="14" width="339" height="33"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="32" id="v7m-r6-mnA"/>
+                                        </constraints>
+                                        <segments>
+                                            <segment title="Standard"/>
+                                            <segment title="Satellite"/>
+                                        </segments>
+                                        <color key="tintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="segmentSelected:" destination="BYZ-38-t0r" eventType="valueChanged" id="wdb-gL-k2L"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="M1i-zb-9zf" firstAttribute="leading" secondItem="7mV-cR-ygv" secondAttribute="leading" constant="18" id="I2N-21-sQV"/>
+                                    <constraint firstItem="M1i-zb-9zf" firstAttribute="top" secondItem="7mV-cR-ygv" secondAttribute="top" constant="14" id="XG3-Gv-7XG"/>
+                                    <constraint firstItem="M1i-zb-9zf" firstAttribute="centerX" secondItem="7mV-cR-ygv" secondAttribute="centerX" id="h5C-2c-9gW"/>
+                                    <constraint firstAttribute="height" constant="60" id="yeE-3N-ADe"/>
+                                </constraints>
+                            </view>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ER-HW-QoO">
                                 <rect key="frame" x="20" y="727" width="51" height="31"/>
                                 <color key="tintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -55,60 +82,62 @@
                                     <constraint firstAttribute="width" constant="32" id="oTA-1a-1pr"/>
                                 </constraints>
                                 <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" backgroundImage="locon"/>
+                                <size key="titleShadowOffset" width="2" height="0.0"/>
+                                <state key="normal" backgroundImage="locon">
+                                    <color key="titleShadowColor" red="0.71927612809999997" green="0.81117069399999997" blue="0.88353535429999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
                                 <connections>
                                     <action selector="goToMyLoc:" destination="BYZ-38-t0r" eventType="touchUpInside" id="idt-QY-1Z5"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-Tw-6pS">
-                                <rect key="frame" x="171.66666666666666" y="726" width="32" height="32"/>
+                            <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRC-Tw-6pS">
+                                <rect key="frame" x="172" y="726" width="32" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="32" id="5Fy-Ad-3xr"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="32" id="ac9-Ir-Sp3"/>
+                                    <constraint firstAttribute="height" constant="32" id="xpH-6i-D1l"/>
                                 </constraints>
-                                <color key="tintColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="tintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="titleShadowOffset" width="3" height="5"/>
-                                <state key="normal" backgroundImage="settings">
+                                <state key="normal" backgroundImage="settings_cog">
                                     <color key="titleColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
                                     <segue destination="1P8-0y-e2v" kind="presentation" id="G4L-Vs-HDc"/>
                                 </connections>
                             </button>
-                            <segmentedControl contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="M1i-zb-9zf">
-                                <rect key="frame" x="20" y="59" width="339" height="33"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="v7m-r6-mnA"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="Standard"/>
-                                    <segment title="Satellite"/>
-                                </segments>
-                                <color key="tintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <action selector="segmentSelected:" destination="BYZ-38-t0r" eventType="valueChanged" id="wdb-gL-k2L"/>
-                                </connections>
-                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="7mV-cR-ygv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="1vg-ZY-0wQ"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="34h-Q5-IbF"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="width" secondItem="fh3-DA-K6g" secondAttribute="width" id="6qo-aY-BcE"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="8iY-dA-hiO"/>
                             <constraint firstItem="fh3-DA-K6g" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="DwM-zj-pPx"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="centerX" secondItem="qRC-Tw-6pS" secondAttribute="centerX" id="HY7-xY-eza"/>
                             <constraint firstItem="fh3-DA-K6g" firstAttribute="centerY" secondItem="7ER-HW-QoO" secondAttribute="centerY" id="HeL-mR-e8D"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="baseline" secondItem="fh3-DA-K6g" secondAttribute="baseline" id="IAv-pv-LG8"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Id8-ie-Kbj"/>
-                            <constraint firstItem="M1i-zb-9zf" firstAttribute="trailing" secondItem="fh3-DA-K6g" secondAttribute="trailing" id="POJ-bT-4EY"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="height" secondItem="fh3-DA-K6g" secondAttribute="height" id="J9g-tV-Y1z"/>
+                            <constraint firstItem="7mV-cR-ygv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="4" id="KU6-VP-sY2"/>
+                            <constraint firstItem="fh3-DA-K6g" firstAttribute="leading" secondItem="cec-Ap-euZ" secondAttribute="trailing" constant="-48" id="LpC-F7-JWm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="fh3-DA-K6g" secondAttribute="trailing" constant="16" id="Mbf-uw-A02"/>
+                            <constraint firstItem="7ER-HW-QoO" firstAttribute="top" secondItem="cec-Ap-euZ" secondAttribute="bottom" constant="-51" id="NT2-AP-E9F"/>
+                            <constraint firstItem="fh3-DA-K6g" firstAttribute="top" secondItem="cec-Ap-euZ" secondAttribute="bottom" constant="-52" id="PDo-BE-pCY"/>
                             <constraint firstItem="cec-Ap-euZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="SJ7-c5-k6f"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="firstBaseline" secondItem="fh3-DA-K6g" secondAttribute="firstBaseline" id="Sum-NS-RSP"/>
                             <constraint firstItem="7ER-HW-QoO" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="20" id="XAG-Pn-F95"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" constant="20" id="Xm1-n6-WBd"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="top" secondItem="fh3-DA-K6g" secondAttribute="top" id="e3v-dg-NTk"/>
-                            <constraint firstItem="M1i-zb-9zf" firstAttribute="leading" secondItem="7ER-HW-QoO" secondAttribute="leading" id="krN-VY-56k"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="top" secondItem="cec-Ap-euZ" secondAttribute="bottom" constant="-52" id="myY-hh-oo2"/>
+                            <constraint firstItem="7mV-cR-ygv" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="nzn-cN-PDC"/>
+                            <constraint firstItem="qRC-Tw-6pS" firstAttribute="leading" secondItem="7ER-HW-QoO" secondAttribute="trailing" constant="103" id="pRE-hk-qTN"/>
                             <constraint firstItem="qRC-Tw-6pS" firstAttribute="bottom" secondItem="fh3-DA-K6g" secondAttribute="bottom" id="qYc-Uf-kJn"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7ER-HW-QoO" secondAttribute="bottom" constant="20" id="riq-AP-x0p"/>
-                            <constraint firstItem="M1i-zb-9zf" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="sv1-s4-no3"/>
+                            <constraint firstItem="fh3-DA-K6g" firstAttribute="leading" secondItem="qRC-Tw-6pS" secondAttribute="trailing" constant="123" id="wSy-qO-02N"/>
+                            <constraint firstItem="7ER-HW-QoO" firstAttribute="top" secondItem="cec-Ap-euZ" secondAttribute="bottom" constant="-51" id="y4F-th-UKF"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
@@ -121,11 +150,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133.59999999999999" y="130.78817733990149"/>
+            <point key="canvasLocation" x="133.125" y="130"/>
         </scene>
     </scenes>
     <resources>
-        <image name="locon" width="20" height="20"/>
-        <image name="settings" width="20" height="20"/>
+        <image name="locon" width="170" height="170"/>
+        <image name="settings_cog" width="170" height="170"/>
     </resources>
 </document>

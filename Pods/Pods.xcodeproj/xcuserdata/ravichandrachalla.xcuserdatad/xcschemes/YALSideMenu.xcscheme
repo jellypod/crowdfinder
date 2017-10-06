@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "485B9E45AE9C9AD8625BAFEE2CD020FC"
-               BuildableName = "Pods_crowdfinder.framework"
-               BlueprintName = "Pods-crowdfinder"
+               BlueprintIdentifier = "2550778F9239C85812D1F27241F54D13"
+               BuildableName = "SideMenu.framework"
+               BlueprintName = "YALSideMenu"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,9 +47,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "485B9E45AE9C9AD8625BAFEE2CD020FC"
-            BuildableName = "Pods_crowdfinder.framework"
-            BlueprintName = "Pods-crowdfinder"
+            BlueprintIdentifier = "2550778F9239C85812D1F27241F54D13"
+            BuildableName = "SideMenu.framework"
+            BlueprintName = "YALSideMenu"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

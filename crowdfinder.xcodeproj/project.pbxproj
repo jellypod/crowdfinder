@@ -60,9 +60,9 @@
 		CDA5194B1F77542B00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA5194D1F77562E00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDBCC8861F81EFCF0000AAC4 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
-		CDBE53A61F7F6CE700A49CD6 /* l3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = l3.png; sourceTree = "<group>"; };
 		CDD7B6921F7785C800A9C9B7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CDDA26881F777C8C0041901B /* TKSwitcherCollection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TKSwitcherCollection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDEE2E4C1F882844000293A2 /* l3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = l3.png; sourceTree = "<group>"; };
 		CDF605A91F78D5F8006C966C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CDF605AD1F78FA28006C966C /* NavigateUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigateUIButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,8 +122,8 @@
 		CD103B591F77192B007A7600 /* crowdfinder */ = {
 			isa = PBXGroup;
 			children = (
+				CDEE2E4C1F882844000293A2 /* l3.png */,
 				CDBCC8861F81EFCF0000AAC4 /* placeholder.png */,
-				CDBE53A61F7F6CE700A49CD6 /* l3.png */,
 				CDF605AD1F78FA28006C966C /* NavigateUIButton.swift */,
 				CDF605A91F78D5F8006C966C /* GoogleService-Info.plist */,
 				CD103B6E1F771DE7007A7600 /* FBAnnotation.swift */,
@@ -235,6 +235,7 @@
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftOverlays/SwiftOverlays.framework",
+				"${BUILT_PRODUCTS_DIR}/YALSideMenu/SideMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -246,6 +247,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftOverlays.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
