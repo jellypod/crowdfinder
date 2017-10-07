@@ -41,6 +41,13 @@ class SettingsViewController: FormViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        var nav = self.navigationController?.navigationBar
+        nav?.barTintColor = tintColor
+        nav?.tintColor = UIColor.white;
+        nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+    }
+    
    
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,23 +57,6 @@ class SettingsViewController: FormViewController {
         self.tableView?.tintColor = tintColor
         
         
-        form +++ Section(){ section in
-            var header = HeaderFooterView<CustomHeaderView>(.class)
-            
-            header.onSetupView = { view, _ in
-                 view.frame.size.height = 50
-                let label = UILabel(frame: CGRect(x: 5, y: 0, width: 180, height: 50))
-                label.textAlignment = NSTextAlignment.left
-                label.textColor = self.tintColor
-                label.text =  " Preferences"
-                label.font = UIFont.boldSystemFont(ofSize: 20)
-                view.addSubview(label)
-                
-            }
-            section.header = header
-            
-        }
-       
         
         form +++ Section(){ section in
             var header = HeaderFooterView<CustomHeaderView>(.class)
@@ -193,7 +183,7 @@ class SettingsViewController: FormViewController {
     
     func cancelTapped(){
         
-        self.dismiss(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
         
         func okTapped(){
@@ -255,7 +245,8 @@ class SettingsViewController: FormViewController {
            // defaults.set("\(String(describing:prefAge))|\(String(describing:prefGender))", forKey: "interest")
             
            
-            self.dismiss(animated:true)
+                self.navigationController?.popViewController(animated: true)
+
             }
         }
 }

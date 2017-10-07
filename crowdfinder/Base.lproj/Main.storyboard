@@ -11,26 +11,31 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Settings View Controller-->
+        <!--Settings-->
         <scene sceneID="5Mt-PI-VNc">
             <objects>
                 <viewController storyboardIdentifier="settings" id="1P8-0y-e2v" customClass="SettingsViewController" customModule="crowdfinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="A2e-ah-grL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="0.3411764705882353" blue="0.32156862745098036" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="tintColor" red="0.67455112930000005" green="0.15692374110000001" blue="0.10914970929999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                         <viewLayoutGuide key="safeArea" id="7s5-dS-fja"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Settings" leftItemsSupplementBackButton="YES" id="tTg-qO-AhZ">
+                        <barButtonItem key="leftBarButtonItem" title="kkk" image="back-chevron.png" id="Gfy-yC-ZcX">
+                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="f7p-E1-QRL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1662" y="-384"/>
+            <point key="canvasLocation" x="2441" y="-384"/>
         </scene>
-        <!--Retrieving location ..-->
+        <!--home-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="crowdfinder" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="home" id="BYZ-38-t0r" customClass="ViewController" customModule="crowdfinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -105,7 +110,7 @@
                                     <color key="titleShadowColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="1P8-0y-e2v" kind="presentation" id="G4L-Vs-HDc"/>
+                                    <action selector="settingsClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sDg-Zu-Lpd"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -189,8 +194,28 @@
             </objects>
             <point key="canvasLocation" x="-314" y="-384"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="vjh-qS-T3a">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LOq-gZ-9Qw" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="vTB-8T-U6P">
+                        <rect key="frame" x="0.0" y="44" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="0.3411764706" blue="0.32156862749999998" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="1P8-0y-e2v" kind="relationship" relationship="rootViewController" id="XLc-y3-ooo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zqs-BX-SvL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1660.8" y="-384.23645320197045"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="back-chevron.png" width="13" height="21"/>
         <image name="locon" width="170" height="170"/>
         <image name="settings_cog" width="170" height="170"/>
     </resources>

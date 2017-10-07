@@ -121,10 +121,6 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
             }
         })
         significantLocation()
-        
-        
-      
-        
     }
     
     func oneShotLocation()
@@ -183,6 +179,15 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
        
     }
     
+    @IBAction func settingsClick(_ sender: Any) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
+
+
+    }
+    
+    
     func significantLocation()
     {
         //get user's current loc and add to firebase, also monitor for changes in the same place.
@@ -218,6 +223,10 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
                             ]
                         )
                         
+                    }
+                    
+                    self.getCityFrom(location: self.currentLocation) { (address) in
+                        self.navTitle.title = address
                     }
                     
                 }
@@ -324,6 +333,10 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
         }else{
             self.ref.child("crowddata").child(self.uuid).removeValue()
             _ = self.addAnnotations()
+        }
+        
+        self.getCityFrom(location: self.currentLocation) { (address) in
+            self.navTitle.title = address
         }
     }
     
@@ -472,7 +485,12 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
             self.ref.child("crowddata").child(self.uuid).removeValue()
             _ = self.addAnnotations()
         }
+        getCityFrom(location: self.currentLocation) { (address) in
+            self.navTitle.title = address
+        }
     }
+    
+   
 }
 
 extension ViewController : FBClusteringManagerDelegate {
