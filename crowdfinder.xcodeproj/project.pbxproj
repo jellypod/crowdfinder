@@ -55,6 +55,7 @@
 		CD103B781F771DE8007A7600 /* FBAnnotationClusterViewConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBAnnotationClusterViewConfiguration.swift; sourceTree = "<group>"; };
 		CD103B851F7720C4007A7600 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD103B8B1F77223F007A7600 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD4367B61F88CF1B00B8A4E7 /* icon-search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-search.png"; sourceTree = "<group>"; };
 		CD57166D1F7DB340007751BF /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		CD5716711F7E34EC007751BF /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
 		CDA5194B1F77542B00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -122,6 +123,7 @@
 		CD103B591F77192B007A7600 /* crowdfinder */ = {
 			isa = PBXGroup;
 			children = (
+				CD4367B61F88CF1B00B8A4E7 /* icon-search.png */,
 				CDEE2E4C1F882844000293A2 /* l3.png */,
 				CDBCC8861F81EFCF0000AAC4 /* placeholder.png */,
 				CDF605AD1F78FA28006C966C /* NavigateUIButton.swift */,
@@ -233,6 +235,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/OnboardingKit/OnboardingKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/SHSearchBar/SHSearchBar.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLocation/SwiftLocation.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftOverlays/SwiftOverlays.framework",
 				"${BUILT_PRODUCTS_DIR}/YALSideMenu/SideMenu.framework",
@@ -245,6 +248,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OnboardingKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SHSearchBar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLocation.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftOverlays.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",

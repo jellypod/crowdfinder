@@ -51,6 +51,7 @@ PODS:
   - nanopb/encode (0.3.8)
   - OnboardingKit (0.0.5)
   - Protobuf (3.4.0)
+  - SHSearchBar (1.1.0)
   - SwiftLocation (2.0.7)
   - SwiftOverlays (3.0.0)
   - YALSideMenu (2.0.1)
@@ -64,6 +65,7 @@ DEPENDENCIES:
   - GooglePlacePicker
   - GooglePlaces
   - OnboardingKit
+  - SHSearchBar
   - SwiftLocation
   - SwiftOverlays
   - YALSideMenu (~> 2.0)
@@ -94,10 +96,11 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   OnboardingKit: 44b085c9e1e191a61fe1caea2bb581645fac1dc1
   Protobuf: 03eef2ee0b674770735cf79d9c4d3659cf6908e8
+  SHSearchBar: 1dbaf0999acfd9029fe1cb65bd2625e456ed0bf7
   SwiftLocation: 1fe2e15a5812e961496e82eeaca71d03e829e47a
   SwiftOverlays: 4cdd9e4f5c7817fb6348882059eb697e11685fad
   YALSideMenu: 4d6b90ea44dcdded18a99e46b676e4ad51d9c6bb
 
-PODFILE CHECKSUM: bf043f3dc11f56b47fdb2ff05404716948975a84
+PODFILE CHECKSUM: 97a7cdadc8ffbf2742d23a2dbc0b514b6ac67596
 
 COCOAPODS: 1.3.1

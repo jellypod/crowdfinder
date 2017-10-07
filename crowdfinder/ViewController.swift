@@ -5,8 +5,8 @@ import MapKit
 import FirebaseDatabase
 import GoogleMaps
 import SwiftOverlays
-import OnboardingKit
-class ViewController: UIViewController,CLLocationManagerDelegate{
+import GooglePlaces
+class ViewController:UIViewController, CLLocationManagerDelegate{
     let bgColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     let clusteringManager = FBClusteringManager()
@@ -29,12 +29,22 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     @IBOutlet weak var myLoc: UIButton!
     
+    @IBOutlet weak var navTitle: UINavigationItem!
     @IBOutlet weak var overlayView: UIView!
     
     var isTimerRunning = false
     
     @IBOutlet weak var toggleOnlineSwitch: UISwitch!
    
+     var resultSearchController:UISearchController? = nil
+    
+    @IBAction func autoSuggestClick(_ sender: Any) {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
+    }
+    
+    
     
     @IBAction func segmentSelected(_ sender: Any) {
         if mapTypeSegment.selectedSegmentIndex == 0 {
@@ -44,8 +54,11 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         }
     }
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+      
         mapView.showsUserLocation = true
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
@@ -109,6 +122,9 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
         })
         significantLocation()
         
+        
+      
+        
     }
     
     func oneShotLocation()
@@ -122,6 +138,10 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             self.showWaitOverlayWithText(text)
             Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 ////print("new loc: \(location)")
+                self.getCityFrom(location: self.currentLocation) { (address) in
+                    self.navTitle.title = address
+                }
+                
                 if self.toggleOnlineSwitch.isOn{
                     let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
                     if nearestLoc != nil{
@@ -159,6 +179,8 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
             }
         
         }
+        
+       
     }
     
     func significantLocation()
@@ -307,6 +329,14 @@ class ViewController: UIViewController,CLLocationManagerDelegate{
     
     func getAlreadyExistingRecFromFirebase(){
         self.ref.child("crowddata").child(self.uuid).removeValue()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        var nav = self.navigationController?.navigationBar
+        let tintColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
+        nav?.barTintColor = tintColor
+        nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -586,6 +616,24 @@ extension ViewController : MKMapViewDelegate {
         }
     }
     
+    func getCityFrom(location: CLLocation, completion:@escaping ((String?) -> Void)) {
+        let geocoder = CLGeocoder()
+        
+        geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+            if let placemark = placemarks?.first,
+                let subThoroughfare = placemark.subThoroughfare,
+                let thoroughfare = placemark.thoroughfare,
+                let locality = placemark.locality,
+                let administrativeArea = placemark.administrativeArea {
+                let address = locality
+                
+                return completion(address)
+                
+            }
+            completion(nil)
+        }
+    }
+    
     func getAddressFromGoogle(location:CLLocation){
         let googleGeocoder = GMSGeocoder()
         googleGeocoder.reverseGeocodeCoordinate(location.coordinate) { response , error in
@@ -667,6 +715,37 @@ extension ViewController : MKMapViewDelegate {
         }
         
         return closestLocation!
+    }
+    
+}
+
+extension ViewController: GMSAutocompleteViewControllerDelegate {
+    
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
 }

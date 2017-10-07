@@ -12,6 +12,7 @@ import FirebaseCore
 import FirebaseMessaging
 import FirebaseInstanceID
 import GoogleMaps
+import GooglePlaces
 import FirebaseDatabase
 
 @UIApplicationMain
@@ -28,6 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         GMSServices.provideAPIKey("AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg")
+        
+        
+        let apiKey = "AIzaSyB1W_qFTcshpGSmZFUFMR-D2NZYvrHwV40"
+        GMSPlacesClient.provideAPIKey(apiKey)
+        print(GMSPlacesClient.openSourceLicenseInfo())
+        if apiKey == "YOUR_API_KEY" {
+            print("IF YOU SEE THIS IN YOUR CONSOLE IT'S BECAUSE YOU FORGOT TO SET YOUR API_KEY")
+            assertionFailure()
+        }
         
         return true
     }
