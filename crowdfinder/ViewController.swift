@@ -6,7 +6,7 @@ import FirebaseDatabase
 import GoogleMaps
 import SwiftOverlays
 import GooglePlaces
-class ViewController:UIViewController, CLLocationManagerDelegate{
+class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocompleteViewControllerDelegate{
     let bgColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
     @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     let clusteringManager = FBClusteringManager()
@@ -26,12 +26,11 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
     var addressFromGoogle:String = ""
     var apikey:String = "AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg"
     var nearestLocations: [CLLocation] = []
-    
     @IBOutlet weak var myLoc: UIButton!
-    
+    var autoSuggestLocation = CLLocation()
     @IBOutlet weak var navTitle: UINavigationItem!
     @IBOutlet weak var overlayView: UIView!
-    
+    let navCenterButton = UIButton(type: .system)
     var isTimerRunning = false
     
     @IBOutlet weak var toggleOnlineSwitch: UISwitch!
@@ -58,6 +57,12 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navCenterButton.tintColor = .white
+        //navCenterButton.titleLabel?.adjustsFontSizeToFitWidth = true
+       // navCenterButton.addTarget(self, action: "autoSuggestClick:", for: .touchUpInside)
+        navCenterButton.titleLabel?.font = UIFont(name: (navCenterButton.titleLabel?.font.fontName)!, size: 15)
+        
+        self.navigationItem.titleView = navCenterButton//UIBarButtonItem(customView: button)
       
         mapView.showsUserLocation = true
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
@@ -122,7 +127,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
         })
         significantLocation()
     }
-    
+
     func oneShotLocation()
     {
         //get user's current loc and add to firebase, also monitor for changes in the same place.
@@ -135,7 +140,10 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
             Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 ////print("new loc: \(location)")
                 self.getCityFrom(location: self.currentLocation) { (address) in
-                    self.navTitle.title = address
+                    if address != nil{
+                        self.navCenterButton.setTitle("\(address!)", for: .normal)
+                    }
+                    
                 }
                 
                 if self.toggleOnlineSwitch.isOn{
@@ -165,7 +173,8 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
                     }
                     
                 }
-                self.centerMapOnLocation(location: location)
+                
+                 self.centerMapOnLocation(location: location)
                 self.mapView.showsUserLocation = true
                 self.removeAllOverlays()
                 
@@ -173,7 +182,12 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
                 request.cancel() // stop continous location monitoring on error
                 ////print("Location monitoring failed due to an error \(error)")
             }
-        
+            
+            self.getCityFrom(location: self.currentLocation) { (address) in
+                if address != nil{
+                    self.navCenterButton.setTitle("\(address!)", for: .normal)
+                }
+            }
         }
         
        
@@ -198,6 +212,11 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
             let text = "Retrieving your location. Please wait.."
             self.showWaitOverlayWithText(text)
             Location.getLocation(accuracy: .block, frequency: .significant, success: { (_, location) in
+                self.getCityFrom(location: self.currentLocation) { (address) in
+                    if address != nil{
+                        self.navCenterButton.setTitle("\(address!)", for: .normal)
+                    }
+                }
                 ////print("new loc: \(location)")
                 if self.toggleOnlineSwitch.isOn{
                     let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
@@ -225,12 +244,8 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
                         
                     }
                     
-                    self.getCityFrom(location: self.currentLocation) { (address) in
-                        self.navTitle.title = address
-                    }
-                    
                 }
-                self.centerMapOnLocation(location: location)
+                 self.centerMapOnLocation(location: location)
                 self.mapView.showsUserLocation = true
                 self.removeAllOverlays()
                 
@@ -334,22 +349,26 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
             self.ref.child("crowddata").child(self.uuid).removeValue()
             _ = self.addAnnotations()
         }
-        
-        self.getCityFrom(location: self.currentLocation) { (address) in
-            self.navTitle.title = address
+        getCityFrom(location: self.currentLocation) { (address) in
+            if address != nil{
+            self.navCenterButton.setTitle("\(address!)", for: .normal)
+            }
         }
+       
     }
     
+   
     func getAlreadyExistingRecFromFirebase(){
         self.ref.child("crowddata").child(self.uuid).removeValue()
     }
     
+   
     override func viewWillAppear(_ animated: Bool) {
         var nav = self.navigationController?.navigationBar
         let tintColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
         nav?.barTintColor = tintColor
         nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
-
+      //  oneShotLocation()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -486,7 +505,9 @@ class ViewController:UIViewController, CLLocationManagerDelegate{
             _ = self.addAnnotations()
         }
         getCityFrom(location: self.currentLocation) { (address) in
-            self.navTitle.title = address
+            if address != nil{
+            self.navCenterButton.setTitle("\(address!)", for: .normal)
+}
         }
     }
     
@@ -735,15 +756,18 @@ extension ViewController : MKMapViewDelegate {
         return closestLocation!
     }
     
-}
-
-extension ViewController: GMSAutocompleteViewControllerDelegate {
-    
     // Handle the user's selection.
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
-        print("Place name: \(place.name)")
-        print("Place address: \(place.formattedAddress)")
-        print("Place attributions: \(place.attributions)")
+        let location = CLLocationCoordinate2DMake(place.coordinate.latitude, place.coordinate.longitude)
+        let tempLoc:CLLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        //autoSuggestLocation = tempLoc
+        self.centerMapOnLocation(location: tempLoc)
+        _ = self.addAnnotations()
+        self.getCityFrom(location: tempLoc) { (address) in
+            if address != nil{
+            self.navCenterButton.setTitle("\(address!)", for: .normal)
+            }
+        }
         dismiss(animated: true, completion: nil)
     }
     
@@ -767,6 +791,8 @@ extension ViewController: GMSAutocompleteViewControllerDelegate {
     }
     
 }
+
+
 
 
 

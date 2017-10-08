@@ -147,14 +147,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Retrieving location .." id="Efl-Oh-k8u">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="search" id="iQb-uk-Dzy">
-                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="autoSuggestClick:" destination="BYZ-38-t0r" id="8hs-37-oaS"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Retrieving location.." largeTitleDisplayMode="always" id="Efl-Oh-k8u"/>
                     <connections>
                         <outlet property="mapTypeSegment" destination="M1i-zb-9zf" id="HFa-3b-qti"/>
                         <outlet property="mapView" destination="cec-Ap-euZ" id="WYF-JV-Ja8"/>
