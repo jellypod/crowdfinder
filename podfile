@@ -6,9 +6,11 @@ pod 'Firebase/Database'
 pod 'GooglePlaces'
   pod 'GooglePlacePicker'
   pod 'GoogleMaps'
+ pod 'Firebase/Messaging'
 pod ‘SwiftLocation’
 pod 'SwiftOverlays'
 pod 'OnboardingKit'
 pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'feature/Xcode9-Swift3_2'
 
-pod 'MARoundButton'
+pod 'YALSideMenu', '~> 2.0'
+pod "SHSearchBar"
