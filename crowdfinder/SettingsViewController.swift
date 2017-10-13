@@ -46,6 +46,7 @@ class SettingsViewController: FormViewController {
         nav?.barTintColor = tintColor
         nav?.tintColor = UIColor.white;
         nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+        nav?.isHidden = false
     }
     
    
