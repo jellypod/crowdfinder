@@ -22,6 +22,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     var array:[FBAnnotation] = []
     var myInfo:String = "0|Male"
     var interest:String = "0|Male"
+    var isturnedoffloc = "false"
     var ref:DatabaseReference!
     var addressFromGoogle:String = ""
     var apikey:String = "AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg"
@@ -71,7 +72,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
         clusteringManager.delegate = self
         mapView.delegate = self
         getUserDefaultData()
-        
+        checkAndCreteUUID()
         let status  = CLLocationManager.authorizationStatus()
         if status == .notDetermined {
             locManager.requestWhenInUseAuthorization()
@@ -125,7 +126,38 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                 self.clusteringManager.add(annotations: self.array)
             }
         })
-        significantLocation()
+        
+        
+        
+        
+    }
+    
+    func checkAndCreteUUID(){
+        
+        //check and create uuid
+        let defaults = UserDefaults.standard
+        if let tempuuid = defaults.string(forKey: "uuid") {
+            ////print(tempuuid)
+            uuid = tempuuid
+            self.ref.child("crowddata").child(self.uuid).setValue(
+                [
+                    "interest": self.interest,
+                    "myinfo": self.myInfo,
+                    "currlatlng":"\(000.000,000.000)"
+                ]
+            )
+        }else{
+            uuid = NSUUID().uuidString
+            defaults.set(uuid, forKey: "uuid")
+            getAlreadyExistingRecFromFirebase()
+            self.ref.child("crowddata").child(self.uuid).setValue(
+                [
+                    "interest": "",
+                    "myinfo": "",
+                    "currlatlng":"\(000.000,000.000)"
+                ]
+            )
+        }
     }
 
     func oneShotLocation()
@@ -139,12 +171,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
             self.showWaitOverlayWithText(text)
             Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 ////print("new loc: \(location)")
-                self.getCityFrom(location: self.currentLocation) { (address) in
-                    if address != nil{
-                        self.navCenterButton.setTitle("\(address!)", for: .normal)
-                    }
-                    
-                }
+               
                 
                 if self.toggleOnlineSwitch.isOn{
                     let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
@@ -183,11 +210,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                 ////print("Location monitoring failed due to an error \(error)")
             }
             
-            self.getCityFrom(location: self.currentLocation) { (address) in
-                if address != nil{
-                    self.navCenterButton.setTitle("\(address!)", for: .normal)
-                }
-            }
+            
         }
         
        
@@ -212,11 +235,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
             let text = "Retrieving your location. Please wait.."
             self.showWaitOverlayWithText(text)
             Location.getLocation(accuracy: .block, frequency: .significant, success: { (_, location) in
-                self.getCityFrom(location: self.currentLocation) { (address) in
-                    if address != nil{
-                        self.navCenterButton.setTitle("\(address!)", for: .normal)
-                    }
-                }
+                
                 ////print("new loc: \(location)")
                 if self.toggleOnlineSwitch.isOn{
                     let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
@@ -245,7 +264,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                     }
                     
                 }
-                 self.centerMapOnLocation(location: location)
+                 //self.centerMapOnLocation(location: location)
                 self.mapView.showsUserLocation = true
                 self.removeAllOverlays()
                 
@@ -349,11 +368,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
             self.ref.child("crowddata").child(self.uuid).removeValue()
             _ = self.addAnnotations()
         }
-        getCityFrom(location: self.currentLocation) { (address) in
-            if address != nil{
-            self.navCenterButton.setTitle("\(address!)", for: .normal)
-            }
-        }
+        
        
     }
     
@@ -366,15 +381,15 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     override func viewWillAppear(_ animated: Bool) {
         var nav = self.navigationController?.navigationBar
         let tintColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
-        nav?.barTintColor = tintColor
-        nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
-      //  oneShotLocation()
+       // nav?.barTintColor = tintColor
+        //nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+        nav?.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         getUserDefaultData()
         oneShotLocation()
-        _ = self.addAnnotations()
+       // _ = self.addAnnotations()
     }
     
     func getUserDefaultData(){
@@ -385,6 +400,16 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
         
         if let tempinterest = defaults.string(forKey: "interest") {
             interest = tempinterest
+        }
+        
+        if let tempisturnedoffloc = defaults.string(forKey: "isturnedoffloc") {
+            isturnedoffloc = tempisturnedoffloc
+        }
+        
+        if myInfo == "0|Male"{
+            let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
+            self.navigationController?.pushViewController(settingsViewController, animated: true)
         }
     }
     
@@ -461,6 +486,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     }
     
     @IBAction func toggleStatusOnOff(_ sender: Any) {
+        let defaults = UserDefaults.standard
         if toggleOnlineSwitch.isOn{
             if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
                 CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
@@ -491,25 +517,26 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                             ]
                         )
                     }
-                    self.centerMapOnLocation(location: location)
-                    self.mapView.showsUserLocation = true
+                   // self.centerMapOnLocation(location: location)
+                   // self.mapView.showsUserLocation = true
                     
                 }) { (request, last, error) in
                     request.cancel() // stop continous location monitoring on error
                     ////print("Location monitoring failed due to an error \(error)")
                 }
             }
+            defaults.set("false", forKey: "isturnedoffloc")
             
         }else{
+            
+            
+            defaults.set("true", forKey: "isturnedoffloc")
             self.ref.child("crowddata").child(self.uuid).removeValue()
-            _ = self.addAnnotations()
         }
-        getCityFrom(location: self.currentLocation) { (address) in
-            if address != nil{
-            self.navCenterButton.setTitle("\(address!)", for: .normal)
-}
-        }
+        
     }
+    
+    
     
    
 }
@@ -653,6 +680,7 @@ extension ViewController : MKMapViewDelegate {
             }
             completion(nil)
         }
+
     }
     
     func getCityFrom(location: CLLocation, completion:@escaping ((String?) -> Void)) {
@@ -763,11 +791,7 @@ extension ViewController : MKMapViewDelegate {
         //autoSuggestLocation = tempLoc
         self.centerMapOnLocation(location: tempLoc)
         _ = self.addAnnotations()
-        self.getCityFrom(location: tempLoc) { (address) in
-            if address != nil{
-            self.navCenterButton.setTitle("\(address!)", for: .normal)
-            }
-        }
+       
         dismiss(animated: true, completion: nil)
     }
     
@@ -788,6 +812,11 @@ extension ViewController : MKMapViewDelegate {
     
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        oneShotLocation()
+        print("Fired OneShot")
     }
     
 }
