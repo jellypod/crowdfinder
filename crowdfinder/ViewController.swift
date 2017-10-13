@@ -57,7 +57,6 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navCenterButton.tintColor = .white
         //navCenterButton.titleLabel?.adjustsFontSizeToFitWidth = true
        // navCenterButton.addTarget(self, action: "autoSuggestClick:", for: .touchUpInside)

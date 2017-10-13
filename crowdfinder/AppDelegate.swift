@@ -9,7 +9,6 @@
 import UIKit
 import CoreLocation
 import FirebaseCore
-import FirebaseMessaging
 import FirebaseInstanceID
 import GoogleMaps
 import GooglePlaces
