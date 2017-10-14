@@ -587,29 +587,27 @@ extension ViewController : MKMapViewDelegate {
                 for _ in a.annotations {
                     let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
                     fetchPlacesNearCoordinate(coordinate: loc.coordinate, radius: 10)
-                    getAddressFrom(location: loc) { (address) in
-                        if address == nil{
-                            a.title = "\(a.coordinate.latitude),\(a.coordinate.longitude)"
-                        }else{
-                            if self.placeNameAtCoordinate != ""{
-                                a.title = self.placeNameAtCoordinate
-                            }else{
-                                 a.title = address
-                            }
-                        }
-                        
-                        a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
-                        
-                        clusterView!.canShowCallout = true
-                        clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
-                        
-                        let button = NavigateUIButton()
-                        button.frame = CGRect.init(x: 1, y: 1, width: 32, height: 32)
-                        button.location = loc
-                        button.addTarget(self, action: #selector(self.navigateToLocation(_:)), for: .touchUpInside)
-                        button.setTitle(address, for: .normal)
-                        clusterView!.rightCalloutAccessoryView = button
+                    
+                    Location.getPlacemark(forLocation: loc, success: { placemarks in
+                        // Found Contrada San Rustico, Contrada San Rustico, 63065 Ripatransone, Ascoli Piceno, Italia
+                        // @ <+42.97264130,+13.75787860> +/- 100.00m, region CLCircularRegion
+                       a.title = placemarks.first!.name
+                    }) { error in
+                        a.title = self.getAddressFromGoogle(location: loc)
                     }
+                    
+                    a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
+                    
+                    clusterView!.canShowCallout = true
+                    clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
+                    
+                    let button = NavigateUIButton()
+                    button.frame = CGRect.init(x: 1, y: 1, width: 32, height: 32)
+                    button.location = loc
+                    button.addTarget(self, action: #selector(self.navigateToLocation(_:)), for: .touchUpInside)
+                    button.setTitle(a.title, for: .normal)
+                    clusterView!.rightCalloutAccessoryView = button
+                    self.placeNameAtCoordinate = ""
                     
                     
                 }
@@ -701,7 +699,7 @@ extension ViewController : MKMapViewDelegate {
         }
     }
     
-    func getAddressFromGoogle(location:CLLocation){
+    func getAddressFromGoogle(location:CLLocation) -> String{
         let googleGeocoder = GMSGeocoder()
         googleGeocoder.reverseGeocodeCoordinate(location.coordinate) { response , error in
             if let address = response?.firstResult() {
@@ -711,6 +709,8 @@ extension ViewController : MKMapViewDelegate {
             }
             
         }
+        
+        return self.addressFromGoogle
     }
     
     func fetchPlacesNearCoordinate(coordinate: CLLocationCoordinate2D, radius: Double){
