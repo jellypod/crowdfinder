@@ -587,14 +587,9 @@ extension ViewController : MKMapViewDelegate {
                 for _ in a.annotations {
                     let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
                     fetchPlacesNearCoordinate(coordinate: loc.coordinate, radius: 10)
+                    var addr:String = getAdressName(coords: loc)
                     
-                    Location.getPlacemark(forLocation: loc, success: { placemarks in
-                        // Found Contrada San Rustico, Contrada San Rustico, 63065 Ripatransone, Ascoli Piceno, Italia
-                        // @ <+42.97264130,+13.75787860> +/- 100.00m, region CLCircularRegion
-                       a.title = placemarks.first!.name
-                    }) { error in
-                        a.title = self.getAddressFromGoogle(location: loc)
-                    }
+                    a.title = addr
                     
                     a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
                     
@@ -635,6 +630,49 @@ extension ViewController : MKMapViewDelegate {
             }
             return pinView
         }
+    }
+    
+    func getAdressName(coords: CLLocation) -> String {
+        var address:String = ""
+        CLGeocoder().reverseGeocodeLocation(coords) { (placemark, error) in
+            if error != nil {
+                
+                print("Hay un error")
+                
+            } else {
+                
+                let place = placemark! as [CLPlacemark]
+                
+                if place.count > 0 {
+                    let place = placemark![0]
+                    
+                    var adressString : String = ""
+                    
+                    if place.thoroughfare != nil {
+                        adressString = adressString + place.thoroughfare! + ", "
+                    }
+                    if place.subThoroughfare != nil {
+                        adressString = adressString + place.subThoroughfare! + "\n"
+                    }
+                    if place.locality != nil {
+                        adressString = adressString + place.locality! + " - "
+                    }
+                    if place.postalCode != nil {
+                        adressString = adressString + place.postalCode! + "\n"
+                    }
+                    if place.subAdministrativeArea != nil {
+                        adressString = adressString + place.subAdministrativeArea! + " - "
+                    }
+                    if place.country != nil {
+                        adressString = adressString + place.country!
+                    }
+                    
+                    address =  adressString
+                }
+                
+            }
+        }
+        return address
     }
     
     
