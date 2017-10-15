@@ -583,16 +583,11 @@ extension ViewController : MKMapViewDelegate {
             }
             
             let a = annotation as! FBAnnotationCluster
+            var loc:CLLocation = CLLocation(latitude:000.000, longitude: 000.000)
             if a.annotations.count > 1 {
                 for _ in a.annotations {
-                    let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
+                    loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
                     fetchPlacesNearCoordinate(coordinate: loc.coordinate, radius: 10)
-                    var addr:String = getAdressName(coords: loc)
-                    
-                    a.title = addr
-                    
-                    a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
-                    
                     clusterView!.canShowCallout = true
                     clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
                     
@@ -603,9 +598,11 @@ extension ViewController : MKMapViewDelegate {
                     button.setTitle(a.title, for: .normal)
                     clusterView!.rightCalloutAccessoryView = button
                     self.placeNameAtCoordinate = ""
-                    
-                    
                 }
+                
+                var addr:String = getAdressName(coords: loc)
+                a.title = addr
+                a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
             }
             return clusterView
             
