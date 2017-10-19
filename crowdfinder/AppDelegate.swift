@@ -73,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
         {
             Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
                 
-                let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
+ let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
                 
                 // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
                 self.ref.child("crowddata").child(self.uuid).setValue(

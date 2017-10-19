@@ -25,6 +25,7 @@
 		CD103B831F771DE9007A7600 /* FBAnnotationClusterViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD103B781F771DE8007A7600 /* FBAnnotationClusterViewConfiguration.swift */; };
 		CD57166E1F7DB340007751BF /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57166D1F7DB340007751BF /* CustomHeaderView.swift */; };
 		CD5716721F7E34ED007751BF /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5716711F7E34EC007751BF /* HelpViewController.swift */; };
+		CDCF5B5C1F97EE540059EDA3 /* VenueResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCF5B5B1F97EE540059EDA3 /* VenueResultsViewController.swift */; };
 		CDD7B6931F7785C800A9C9B7 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD7B6921F7785C800A9C9B7 /* SettingsViewController.swift */; };
 		CDF605AA1F78D759006C966C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CDF605A91F78D5F8006C966C /* GoogleService-Info.plist */; };
 		CDF605AE1F78FA28006C966C /* NavigateUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF605AD1F78FA28006C966C /* NavigateUIButton.swift */; };
@@ -58,9 +59,11 @@
 		CD4367B61F88CF1B00B8A4E7 /* icon-search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-search.png"; sourceTree = "<group>"; };
 		CD57166D1F7DB340007751BF /* CustomHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		CD5716711F7E34EC007751BF /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		CD89FFD21F9741AD00501B0C /* icons8-Entering Geo Fence Filled-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icons8-Entering Geo Fence Filled-100.png"; sourceTree = "<group>"; };
 		CDA5194B1F77542B00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDA5194D1F77562E00997426 /* SwiftLocation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftLocation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDBCC8861F81EFCF0000AAC4 /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		CDCF5B5B1F97EE540059EDA3 /* VenueResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VenueResultsViewController.swift; sourceTree = "<group>"; };
 		CDD7B6921F7785C800A9C9B7 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		CDDA26881F777C8C0041901B /* TKSwitcherCollection.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TKSwitcherCollection.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CDEE2E4C1F882844000293A2 /* l3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = l3.png; sourceTree = "<group>"; };
@@ -123,6 +126,7 @@
 		CD103B591F77192B007A7600 /* crowdfinder */ = {
 			isa = PBXGroup;
 			children = (
+				CD89FFD21F9741AD00501B0C /* icons8-Entering Geo Fence Filled-100.png */,
 				CD4367B61F88CF1B00B8A4E7 /* icon-search.png */,
 				CDEE2E4C1F882844000293A2 /* l3.png */,
 				CDBCC8861F81EFCF0000AAC4 /* placeholder.png */,
@@ -142,6 +146,7 @@
 				CD103B5A1F77192B007A7600 /* AppDelegate.swift */,
 				CD103B5C1F77192B007A7600 /* ViewController.swift */,
 				CD103B5E1F77192B007A7600 /* Main.storyboard */,
+				CDCF5B5B1F97EE540059EDA3 /* VenueResultsViewController.swift */,
 				CDD7B6921F7785C800A9C9B7 /* SettingsViewController.swift */,
 				CD103B611F77192B007A7600 /* Assets.xcassets */,
 				CD103B631F77192B007A7600 /* LaunchScreen.storyboard */,
@@ -232,6 +237,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-crowdfinder/Pods-crowdfinder-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
+				"${BUILT_PRODUCTS_DIR}/FoursquareAPIClient/FoursquareAPIClient.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/OnboardingKit/OnboardingKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
@@ -245,6 +251,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FoursquareAPIClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OnboardingKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
@@ -317,6 +324,7 @@
 				CDF605AE1F78FA28006C966C /* NavigateUIButton.swift in Sources */,
 				CD103B801F771DE9007A7600 /* FBZoomLevel.swift in Sources */,
 				CD5716721F7E34ED007751BF /* HelpViewController.swift in Sources */,
+				CDCF5B5C1F97EE540059EDA3 /* VenueResultsViewController.swift in Sources */,
 				CDD7B6931F7785C800A9C9B7 /* SettingsViewController.swift in Sources */,
 				CD103B7C1F771DE9007A7600 /* FBClusteringManager.swift in Sources */,
 				CD103B821F771DE9007A7600 /* FBAnnotationCluster.swift in Sources */,

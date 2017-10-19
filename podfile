@@ -14,3 +14,4 @@ pod 'Eureka', :git => 'https://github.com/xmartlabs/Eureka.git', :branch => 'fea
 
 pod 'YALSideMenu', '~> 2.0'
 pod "SHSearchBar"
+pod 'FoursquareAPIClient'

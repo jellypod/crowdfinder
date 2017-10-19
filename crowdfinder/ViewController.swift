@@ -8,7 +8,6 @@ import SwiftOverlays
 import GooglePlaces
 class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocompleteViewControllerDelegate{
     let bgColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
-    @IBOutlet weak var mapTypeSegment: UISegmentedControl!
     let clusteringManager = FBClusteringManager()
     let configuration = FBAnnotationClusterViewConfiguration.default()
     @IBOutlet private var textView: UITextView?
@@ -28,6 +27,9 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     var apikey:String = "AIzaSyBFGiusWvcQBKYM2wxFRgGDZIJW3dDooTg"
     var nearestLocations: [CLLocation] = []
     @IBOutlet weak var myLoc: UIButton!
+    
+    @IBOutlet weak var pref: UIBarButtonItem!
+    
     var autoSuggestLocation = CLLocation()
     @IBOutlet weak var navTitle: UINavigationItem!
     @IBOutlet weak var overlayView: UIView!
@@ -46,12 +48,11 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     
     
     
-    @IBAction func segmentSelected(_ sender: Any) {
-        if mapTypeSegment.selectedSegmentIndex == 0 {
-            mapView.mapType = .standard
-        }else{
-            mapView.mapType = .satellite
-        }
+    @IBAction func prefClick(_ sender: Any) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
+        self.navigationController?.pushViewController(settingsViewController, animated: true)
+
     }
     
     
@@ -126,10 +127,6 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                 self.clusteringManager.add(annotations: self.array)
             }
         })
-        
-        
-        
-        
     }
     
     func checkAndCreteUUID(){
@@ -160,6 +157,11 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
         }
     }
 
+    @IBAction func checkinClick(_ sender: Any) {
+        let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let venueViewController = storyBoard.instantiateViewController(withIdentifier: "venueresults") as! VenueResultsViewController
+        self.navigationController?.pushViewController(venueViewController, animated: true)
+    }
     func oneShotLocation()
     {
         //get user's current loc and add to firebase, also monitor for changes in the same place.
@@ -381,9 +383,10 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     override func viewWillAppear(_ animated: Bool) {
         var nav = self.navigationController?.navigationBar
         let tintColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
-       // nav?.barTintColor = tintColor
+        nav?.barTintColor = tintColor
         //nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
-        nav?.isHidden = true
+        //nav?.isHidden = true
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -471,19 +474,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
         mapView.setRegion(coordinateRegion, animated: true)
     }
     
-    @IBOutlet weak var segmentControl: UISegmentedControl!
     
-    @IBAction func segmentChanged(_ sender: Any) {
-        if segmentControl.selectedSegmentIndex == 0{
-            mapView.mapType = .standard
-        }
-        else if segmentControl.selectedSegmentIndex == 1 {
-            mapView.mapType = .satellite
-        }
-        else if segmentControl.selectedSegmentIndex == 2{
-            mapView.mapType = .hybrid
-        }
-    }
     
     @IBAction func toggleStatusOnOff(_ sender: Any) {
         let defaults = UserDefaults.standard
@@ -583,12 +574,53 @@ extension ViewController : MKMapViewDelegate {
             }
             
             let a = annotation as! FBAnnotationCluster
+            var addr:String = ""
             var loc:CLLocation = CLLocation(latitude:000.000, longitude: 000.000)
+           
+            
             if a.annotations.count > 1 {
                 for _ in a.annotations {
                     loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
+                    
+                    Location.getPlacemark(forLocation: loc, success: { placemarks in
+                        var placeMark: CLPlacemark?
+                        placeMark = placemarks.first
+                        if let locationName = placeMark?.addressDictionary?["Name"] as? String {
+                            addr += locationName + ", "
+                        }
+                        
+                        // Street address
+                        if let street = placeMark?.addressDictionary?["Thoroughfare"] as? String {
+                            addr += street + ", "
+                        }
+                        
+                        // City
+                        if let city = placeMark?.addressDictionary?["City"] as? String {
+                            addr += city + ", "
+                        }
+                        
+                        // Zip code
+                        if let zip = placeMark?.addressDictionary?["ZIP"] as? String {
+                            addr += zip + ", "
+                        }
+                        
+                        // Country
+                        if let country = placeMark?.addressDictionary?["Country"] as? String {
+                            addr += country
+                        }
+                        
+                        
+                        a.title = addr
+                        
+                    }) { error in
+                        print("Cannot retrive placemark due to an error \(error)")
+                        addr = String(loc.coordinate.latitude)+","+String(loc.coordinate.longitude)
+                        a.title = addr
+                    }
+                    
                     fetchPlacesNearCoordinate(coordinate: loc.coordinate, radius: 10)
                     clusterView!.canShowCallout = true
+                    clusterView!.backgroundColor = .red
                     clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
                     
                     let button = NavigateUIButton()
@@ -598,10 +630,10 @@ extension ViewController : MKMapViewDelegate {
                     button.setTitle(a.title, for: .normal)
                     clusterView!.rightCalloutAccessoryView = button
                     self.placeNameAtCoordinate = ""
+            
                 }
                 
-                var addr:String = getAdressName(coords: loc)
-                a.title = addr
+            
                 a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
             }
             return clusterView
@@ -660,9 +692,10 @@ extension ViewController : MKMapViewDelegate {
                     if place.subAdministrativeArea != nil {
                         adressString = adressString + place.subAdministrativeArea! + " - "
                     }
-                    if place.country != nil {
+                    
+                    /*if place.country != nil {
                         adressString = adressString + place.country!
-                    }
+                    }*/
                     
                     address =  adressString
                 }
@@ -851,7 +884,7 @@ extension ViewController : MKMapViewDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         oneShotLocation()
-        print("Fired OneShot")
+        print("Fired did update")
     }
     
 }
