@@ -154,31 +154,58 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="45" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1ZD-iQ-RQM">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="59" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="1ZD-iQ-RQM">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="H08-lK-7Zj">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="45"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="59" id="H08-lK-7Zj" customClass="VenueTableViewCell" customModule="crowdfinder" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="59"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H08-lK-7Zj" id="lHc-Pm-a3X">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="arq-ZU-z29">
-                                                    <rect key="frame" x="351" y="14" width="16" height="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="xxx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BiO-b5-TdR">
+                                                    <rect key="frame" x="8" y="30" width="301" height="24"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="16" id="9pl-zP-1dT"/>
+                                                        <constraint firstAttribute="height" constant="24" id="uIB-ZF-y9C"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S5d-dp-lWa">
+                                                    <rect key="frame" x="8" y="8" width="301" height="22"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="arq-ZU-z29">
+                                                    <rect key="frame" x="351" y="21" width="16" height="16"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="16" id="a4E-lV-asN"/>
                                                     </constraints>
                                                     <state key="normal" backgroundImage="checkin"/>
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="arq-ZU-z29" firstAttribute="top" secondItem="lHc-Pm-a3X" secondAttribute="topMargin" constant="6" id="OuX-Ah-INP"/>
-                                                <constraint firstItem="arq-ZU-z29" firstAttribute="trailing" secondItem="lHc-Pm-a3X" secondAttribute="trailingMargin" id="tGF-CF-odn"/>
-                                                <constraint firstItem="arq-ZU-z29" firstAttribute="centerY" secondItem="lHc-Pm-a3X" secondAttribute="centerY" id="zez-cE-9i4"/>
+                                                <constraint firstItem="arq-ZU-z29" firstAttribute="centerY" secondItem="lHc-Pm-a3X" secondAttribute="centerY" id="2yE-nI-07H"/>
+                                                <constraint firstItem="S5d-dp-lWa" firstAttribute="leading" secondItem="lHc-Pm-a3X" secondAttribute="leadingMargin" id="4xz-a5-3Kj"/>
+                                                <constraint firstItem="arq-ZU-z29" firstAttribute="trailing" secondItem="lHc-Pm-a3X" secondAttribute="trailingMargin" id="Axk-gD-meE"/>
+                                                <constraint firstItem="BiO-b5-TdR" firstAttribute="trailing" secondItem="S5d-dp-lWa" secondAttribute="trailing" id="Dh5-WW-n9n"/>
+                                                <constraint firstItem="BiO-b5-TdR" firstAttribute="leading" secondItem="S5d-dp-lWa" secondAttribute="leading" id="JHp-hN-GRB"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="BiO-b5-TdR" secondAttribute="bottom" constant="-3.5" id="Xib-5Z-zwO"/>
+                                                <constraint firstItem="arq-ZU-z29" firstAttribute="leading" secondItem="BiO-b5-TdR" secondAttribute="trailing" constant="42" id="YBB-RJ-22T"/>
+                                                <constraint firstItem="S5d-dp-lWa" firstAttribute="top" secondItem="lHc-Pm-a3X" secondAttribute="topMargin" id="hdm-D9-3b6"/>
+                                                <constraint firstItem="arq-ZU-z29" firstAttribute="top" secondItem="lHc-Pm-a3X" secondAttribute="topMargin" constant="13" id="lRI-CJ-BEe"/>
+                                                <constraint firstItem="BiO-b5-TdR" firstAttribute="top" secondItem="S5d-dp-lWa" secondAttribute="bottom" id="sbT-qR-o68"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="address" destination="BiO-b5-TdR" id="vaz-AT-cwY"/>
+                                            <outlet property="btnClose" destination="arq-ZU-z29" id="vfm-d2-WSz"/>
+                                            <outlet property="label" destination="S5d-dp-lWa" id="3uD-Jo-pH5"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

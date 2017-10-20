@@ -99,15 +99,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate,CLLocationManagerDelegate 
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        startHikeLocationUpdates()
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+       // startHikeLocationUpdates()
         
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        locationManager.stopUpdatingLocation()
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+       // locationManager.stopUpdatingLocation()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

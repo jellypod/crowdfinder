@@ -92,7 +92,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
         
         //observer other user's logins and movements.
         ref.observe(.childAdded, with: { (snapshot) -> Void in
-            ////print("added") //someone logged in...
+            ////print("added") //someone logged ign...
             self.placeNameAtCoordinate = ""
             _ = self.addAnnotations()
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
@@ -160,8 +160,23 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     @IBAction func checkinClick(_ sender: Any) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let venueViewController = storyBoard.instantiateViewController(withIdentifier: "venueresults") as! VenueResultsViewController
-        self.navigationController?.pushViewController(venueViewController, animated: true)
+        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways)
+            {
+            Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
+                venueViewController.latlng = String(describing:location.coordinate.latitude) + "," + String(describing:location.coordinate.longitude)
+                venueViewController.uuid = self.uuid
+                venueViewController.myInfo = self.myInfo
+                venueViewController.interest = self.interest
+                self.navigationController?.pushViewController(venueViewController, animated: true)
+                
+            }) { (request, last, error) in
+                request.cancel()
+            }
+        }
     }
+    
+    
     func oneShotLocation()
     {
         //get user's current loc and add to firebase, also monitor for changes in the same place.

@@ -8,24 +8,45 @@
 
 import UIKit
 import FoursquareAPIClient
-class VenueResultsViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+import SwiftOverlays
+import FirebaseDatabase
+
+
+class VenueTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var label: UILabel!
     @IBOutlet weak var btnClose: UIButton!
+    @IBOutlet weak var address: UILabel!
+}
+
+class VenueResultsViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+    var latlng:String = "000.000,000.000"
+    var uuid:String = ""
+    var interest:String = ""
+    var myInfo:String = ""
+    var ref:DatabaseReference!
+    
+    
     @IBOutlet weak var tableView: UITableView!
-     var items: [String] = []
+     var items: [Venue] = []
     let client = FoursquareAPIClient(clientId: "FIYPO2UAGO3TZXBO5HQDB5JYMRHNEZTTONU2J0IZX0YYE3R0", clientSecret: "EAUQM2JUVVJIYWZQ0UQEMRVG5XUEBOYWY5RJNLGIBBQ5BCJY")
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchVenues()
-        tableView.reloadData()
+        self.tableView.dataSource = self as! UITableViewDataSource
+        self.tableView.delegate = self
+        ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         // Do any additional setup after loading the view.
     }
     
-   
-    @IBAction func btnCloseClick(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
+    override func viewDidAppear(_ animated: Bool) {
+        self.showImageAndTextOverlay(UIImage(named:"icon-search")!, text: "Retreiving places near you...")
+        searchVenues()
+        tableView.reloadData()
+        self.removeAllOverlays()
     }
     
+   
+   
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
@@ -36,26 +57,34 @@ class VenueResultsViewController: UIViewController,UITableViewDelegate,UITableVi
     
   
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! UITableViewCell
+        let cell:VenueTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "cell") as! VenueTableViewCell
         print(self.items[indexPath.row])
-        cell.textLabel?.text = self.items[indexPath.row]
-        
+        cell.label.text = self.items[indexPath.row].venueName
+        cell.address.text = self.items[indexPath.row].venueAddress
         return cell
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.ref.child("crowddata").child(self.uuid).setValue(
+            [
+                "interest": self.interest,
+                "myinfo": self.myInfo,
+                "currlatlng":"\(items[indexPath.row].venueLatlng)",
+                 "venuename":"\(items[indexPath.row].venueName)"
+            ]
+        )
         
+        navigationController?.popViewController(animated: true)
     }
-
-
-    override func didReceiveMemoryWarning() {
+    
+   override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
     func searchVenues(){
         let parameter: [String: String] = [
-            "ll": "-27.4376630773431,153.030103201321",
+            "ll": latlng,
             "limit": "10",
             ];
         
@@ -85,22 +114,51 @@ class VenueResultsViewController: UIViewController,UITableViewDelegate,UITableVi
         //sprint(json)
         let results = json?["response"] as? [String: Any]
         let venues = results!["venues"] as? Array<NSDictionary>
-      //  print(venues)
+        print(venues)
         for venue in venues!{
+            var venueObj:Venue = Venue()
             if let venueName = venue["name"]{
-               // print(venueName)
-                items.append(venueName as! String)
+                print(venueName)
+                venueObj.venueName = venueName as! String
             }
-            
-            tableView.reloadData()
+       
             if let venueAddress = venue["location"] as? [String:Any]{
-                //print(venueAddress)
-                if let formattedAddress =  venueAddress["formattedAddress"] {
-                   // print(String(describing: formattedAddress).replacingOccurrences(of: "(", with: ""))
+                if venueAddress["lat"] != nil && venueAddress["lng"] != nil
+                {
+                    venueObj.venueLatlng = String(describing:venueAddress["lat"]!) + "," + String(describing:venueAddress["lng"]!)
+                    if let venueLoc = venueAddress["address"]
+                    {
+                        print(venueLoc)
+                        venueObj.venueAddress  = String(describing:venueLoc)
+                        
+                    }else if let city = venueAddress["city"], let country = venueAddress["country"] , let postalCode = venueAddress["postalCode"] {
+                            venueObj.venueAddress  = String(describing:city)+" "+String(describing:country)+" "+String(describing:postalCode)
+                    }
+                    else if let formatterAddress = venueAddress["formattedAddress"]{
+                        venueObj.venueAddress  = String(describing:formatterAddress)
+                    }
+                    
+                    if venueObj.venueAddress == "("{
+                        venueObj.venueAddress = "Address not found."
+                    }
+                    
+                   
+                        items.append(venueObj)
+                    }
                 }
             }
-            
+        
+         tableView.reloadData()
         }
+    
     }
+
+
+class Venue{
+    var venueName:String = ""
+    var venueLatlng:String = ""
+    var venueAddress:String = ""
 }
+
+
 
