@@ -437,6 +437,8 @@ extension ViewController : MKMapViewDelegate {
             }
             
             let a = annotation as! FBAnnotationCluster
+<<<<<<< HEAD
+<<<<<<< HEAD
             
             var addr:String = ""
             var loc:CLLocation = CLLocation(latitude:000.000, longitude: 000.000)
@@ -482,7 +484,23 @@ extension ViewController : MKMapViewDelegate {
                         a.title = addr
                     }
                     
+=======
+            if a.annotations.count > 1 {
+                for _ in a.annotations {
+                    let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
+>>>>>>> parent of a81655e... loc
+=======
+            if a.annotations.count > 1 {
+                for _ in a.annotations {
+                    let loc = CLLocation(latitude: a.coordinate.latitude, longitude: a.coordinate.longitude)
+>>>>>>> parent of a81655e... loc
                     fetchPlacesNearCoordinate(coordinate: loc.coordinate, radius: 10)
+                    var addr:String = getAdressName(coords: loc)
+                    
+                    a.title = addr
+                    
+                    a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
+                    
                     clusterView!.canShowCallout = true
                     clusterView!.backgroundColor = .red
                     clusterView!.calloutOffset = CGPoint(x: -5, y: 5)
@@ -494,11 +512,23 @@ extension ViewController : MKMapViewDelegate {
                     button.setTitle(a.title, for: .normal)
                     clusterView!.rightCalloutAccessoryView = button
                     self.placeNameAtCoordinate = ""
+<<<<<<< HEAD
+<<<<<<< HEAD
             
                 }
                 
             
                 a.subtitle = "Crowd : \(a.annotations.count) people matching your interest"
+=======
+                    
+                    
+                }
+>>>>>>> parent of a81655e... loc
+=======
+                    
+                    
+                }
+>>>>>>> parent of a81655e... loc
             }
             return clusterView
             
