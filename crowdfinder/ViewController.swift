@@ -47,25 +47,17 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     }
     
     
-    
     @IBAction func prefClick(_ sender: Any) {
         let storyBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let settingsViewController = storyBoard.instantiateViewController(withIdentifier: "settings") as! SettingsViewController
         self.navigationController?.pushViewController(settingsViewController, animated: true)
-
     }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navCenterButton.tintColor = .white
-        //navCenterButton.titleLabel?.adjustsFontSizeToFitWidth = true
-       // navCenterButton.addTarget(self, action: "autoSuggestClick:", for: .touchUpInside)
         navCenterButton.titleLabel?.font = UIFont(name: (navCenterButton.titleLabel?.font.fontName)!, size: 15)
-        
         self.navigationItem.titleView = navCenterButton//UIBarButtonItem(customView: button)
-      
         mapView.showsUserLocation = true
         ref = Database.database().reference(fromURL: "https://crowdfinder-1dot0.firebaseio.com/")
         locManager.delegate = self
@@ -187,38 +179,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
             let text = "Retrieving your location. Please wait.."
             self.showWaitOverlayWithText(text)
             Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-                ////print("new loc: \(location)")
-               
-                
-                if self.toggleOnlineSwitch.isOn{
-                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
-                    if nearestLoc != nil{
-                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                        
-                        // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }
-                    else{
-                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                        
-                    }
-                    
-                }
-                
-                 self.centerMapOnLocation(location: location)
+                self.centerMapOnLocation(location: location)
                 self.mapView.showsUserLocation = true
                 self.removeAllOverlays()
                 
@@ -226,11 +187,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                 request.cancel() // stop continous location monitoring on error
                 ////print("Location monitoring failed due to an error \(error)")
             }
-            
-            
         }
-        
-       
     }
     
     @IBAction func settingsClick(_ sender: Any) {
@@ -241,81 +198,6 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
 
     }
     
-    
-    func significantLocation()
-    {
-        //get user's current loc and add to firebase, also monitor for changes in the same place.
-        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
-            currentLocation = locManager.location
-            // Wait overlay with text
-            let text = "Retrieving your location. Please wait.."
-            self.showWaitOverlayWithText(text)
-            Location.getLocation(accuracy: .block, frequency: .significant, success: { (_, location) in
-                
-                ////print("new loc: \(location)")
-                if self.toggleOnlineSwitch.isOn{
-                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
-                    if nearestLoc != nil{
-                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                        
-                        // let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }
-                    else{
-                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                        
-                    }
-                    
-                }
-                 //self.centerMapOnLocation(location: location)
-                self.mapView.showsUserLocation = true
-                self.removeAllOverlays()
-                
-            }) { (request, last, error) in
-                request.cancel() // stop continous location monitoring on error
-                ////print("Location monitoring failed due to an error \(error)")
-            }
-            
-        }
-        let defaults = UserDefaults.standard
-        if let tempuuid = defaults.string(forKey: "uuid") {
-            ////print(tempuuid)
-            uuid = tempuuid
-            self.ref.child("crowddata").child(self.uuid).setValue(
-                [
-                    "interest": self.interest,
-                    "myinfo": self.myInfo,
-                    "currlatlng":"\(000.000,000.000)"
-                ]
-            )
-        }else{
-            uuid = NSUUID().uuidString
-            defaults.set(uuid, forKey: "uuid")
-            getAlreadyExistingRecFromFirebase()
-            self.ref.child("crowddata").child(self.uuid).setValue(
-                [
-                    "interest": "",
-                    "myinfo": "",
-                    "currlatlng":"\(000.000,000.000)"
-                ]
-            )
-        }
-        
-    }
     
     
     func updateDistance(_ distance: CLProximity) {
@@ -342,51 +224,23 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     
     
     @IBAction func goToMyLoc(_ sender: Any) {
-        if toggleOnlineSwitch.isOn{
-            if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
-                CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
-                currentLocation = locManager.location
-                
-                Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
-                    ////print("new loc: \(location)")
-                    let nearestLoc = self.fetchPlacesNearCoordinate(coordinate:location.coordinate,radius:200) as? CLLocation
-                    
-                    if nearestLoc != nil{
-                        let latlngString:String = "\(nearestLoc!.coordinate.latitude),\(nearestLoc!.coordinate.longitude)"
-                        
-                        //let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }else{
-                        let latlngString:String = "\(location.coordinate.latitude),\(location.coordinate.longitude)"
-                        self.ref.child("crowddata").child(self.uuid).setValue(
-                            [
-                                "interest": self.interest,
-                                "myinfo": self.myInfo,
-                                "currlatlng":"\(latlngString)"
-                            ]
-                        )
-                    }
-                    self.centerMapOnLocation(location: location)
-                    self.mapView.showsUserLocation = true
-                    
-                }) { (request, last, error) in
-                    request.cancel() // stop continous location monitoring on error
-                    ////print("Location monitoring failed due to an error \(error)")
-                }
-            }
+        if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
+            CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedAlways){
+            currentLocation = locManager.location
             
-        }else{
-            self.ref.child("crowddata").child(self.uuid).removeValue()
-            _ = self.addAnnotations()
+            Location.getLocation(accuracy: .block, frequency: .oneShot, success: { (_, location) in
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+                self.mapView.addAnnotation(annotation)
+
+                
+                self.centerMapOnLocation(location: location)
+                self.mapView.showsUserLocation = true
+                
+            }) { (request, last, error) in
+                request.cancel()
+            }
         }
-        
-       
     }
     
    
@@ -399,15 +253,11 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
         var nav = self.navigationController?.navigationBar
         let tintColor:UIColor = UIColor(red: 255/255, green: 87/255, blue: 82/255, alpha: 1.0)
         nav?.barTintColor = tintColor
-        //nav?.titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
-        //nav?.isHidden = true
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         getUserDefaultData()
-        oneShotLocation()
-       // _ = self.addAnnotations()
+        _ = self.addAnnotations()
     }
     
     func getUserDefaultData(){
@@ -434,15 +284,12 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
    
     var annotationPopupText:String!
     func addAnnotations() -> [FBAnnotation]{
-        
         self.array.removeAll()
         self.clusteringManager.removeAll()
         let query = ref.child("crowddata").queryOrdered(byChild:"myinfo")
         query.observe(.value, with: { (snapshot) in
             
             for childSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
-                
-                print(self.interest)
                 if self.array.count != (snapshot.children.allObjects as! [DataSnapshot]).count {
                     
                     guard let childDict = childSnapshot.value as? [String: Any] else { continue }
@@ -459,7 +306,9 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
                                 let lat = latlngDoubleArr?[0]
                                 let lng = latlngDoubleArr?[1]
                                 let a:FBAnnotation = FBAnnotation()
+                                
                                 a.coordinate = CLLocationCoordinate2D(latitude: ((lat as NSString?)?.doubleValue)!, longitude:((lng as NSString?)?.doubleValue)!)
+                                
                                 self.array.append(a)
                             }
                         }
@@ -491,7 +340,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
     
     
     
-    @IBAction func toggleStatusOnOff(_ sender: Any) {
+   /* @IBAction func toggleStatusOnOff(_ sender: Any) {
         let defaults = UserDefaults.standard
         if toggleOnlineSwitch.isOn{
             if (CLLocationManager.authorizationStatus() == CLAuthorizationStatus.authorizedWhenInUse ||
@@ -540,10 +389,7 @@ class ViewController:UIViewController, CLLocationManagerDelegate,GMSAutocomplete
             self.ref.child("crowddata").child(self.uuid).removeValue()
         }
         
-    }
-    
-    
-    
+    }*/
    
 }
 
@@ -579,8 +425,10 @@ extension ViewController : MKMapViewDelegate {
         var reuseId = ""
         
         if annotation is FBAnnotationCluster {
+            
             reuseId = "Cluster"
             var clusterView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseId)
+            clusterView?.backgroundColor = UIColor.purple
             if clusterView == nil {
                 clusterView = FBAnnotationClusterView(annotation: annotation, reuseIdentifier: reuseId, configuration: self.configuration)
             } else {
@@ -589,6 +437,7 @@ extension ViewController : MKMapViewDelegate {
             }
             
             let a = annotation as! FBAnnotationCluster
+            
             var addr:String = ""
             var loc:CLLocation = CLLocation(latitude:000.000, longitude: 000.000)
            
@@ -662,7 +511,7 @@ extension ViewController : MKMapViewDelegate {
                 pinView?.pinTintColor = bgColor
             } else {
                 pinView?.annotation = annotation
-                pinView?.isHidden = true
+                pinView?.isHidden = false
                 
             }
             
@@ -898,7 +747,7 @@ extension ViewController : MKMapViewDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        oneShotLocation()
+        //oneShotLocation()
         print("Fired did update")
     }
     
